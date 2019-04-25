@@ -1,16 +1,15 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const TagSchema = Schema({
+const TagSchema = mongoose.Schema({
     userID: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     name: String,
 
 })
-const Tag = mongoose.model('Tag', mongoose.schema({
+const Tag = mongoose.model('Tag', mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -34,11 +33,11 @@ function validateTag(tag) {
     const schema = {
         name: Joi.string().min(1).max(255).required(),
         color: Joi.string().min(1).max(35).required(),
-        userID: {}
+        userID: Joi.required()
     };
 
     return Joi.validate(Tag, schema);
 }
 
 exports.Tag = Tag;
-exports.validate = validateTag;
+exports.validateTag = validateTag;
