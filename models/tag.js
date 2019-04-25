@@ -1,14 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const TagSchema = mongoose.Schema({
-    userID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    name: String,
-
-})
 const Tag = mongoose.model('Tag', mongoose.Schema({
     name: {
         type: String,
