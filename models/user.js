@@ -38,7 +38,7 @@ function validateUser(user) {
     name: Joi.string().min(5).max(50).required(),
     email: Joi.string().min(5).max(255).required().email(),
     // haslo musi zawierac 1 mala litere, 1 duza litere i 1 cyfre oraz byc dlugosci 8-30 znaków
-    password: Joi.string().required().regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8, 30}$/)
+    password: Joi.string().required().regex(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8, 30}$/)
   };
 
   return Joi.validate(user, schema);
