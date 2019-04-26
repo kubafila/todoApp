@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>TODO List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="Stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="hero">
+        <div class="container">
+            <h1 class="text-center display-2">TODO List</h1>
+            <p class="lead text-center">Hi, what are we doing today?</p>
+            <div class="row justify-content-center"><button type="button"
+                    class="btn btn-primary btn-filter">All</button><button type="button"
+                    class="btn btn-success btn-filter">To Do</button><button type="button"
+                    class="btn btn-warning btn-filter">Done</button></div>
+            <div class="row">
+                <form id="form" class="col-8 mx-auto">
+                    <div class="input-group">
+                        <input class="form-control" id="input" placeholder="Task...">
+                        <span><button id="btn" type="submit" class="btn btn-primary">Submit</button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <ul id="list" class="col-8 mx-auto">
+                    <li>Task<input type="checkbox" aria-label="Checkbox for following text input"></li>
+                    <li>Task<input type="checkbox" aria-label="Checkbox for following text input"></li>
+                    <li>Task<input type="checkbox" aria-label="Checkbox for following text input"></li>
+                    <li>Task<input type="checkbox" aria-label="Checkbox for following text input"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            let form = document.getElementById("form");
+            let input = document.getElementById("input");
+            let btn = document.getElementById("btn");
+            let list = document.getElementById("list");
+            let id = 1;
+
+            btn.addEventListener('click', addToDoItem);
+
+            list.addEventListener("click", boxChecked);
+
+            function addToDoItem(e) {
+                e.preventDefault()
+                if (input.value === "") {
+                    alert('you must enter some value!')
+                } else {
+                    if (list.style.borderTop === "") {
+                        list.style.borderTop = "2px solid white";
+                    }
+                    let text = input.value;
+                    let item = `<li id="li-${id}">${text}
+                                <input id="box-${id}" class="checkbox" type="checkbox"></li>`;
+                    list.insertAdjacentHTML('beforeend', item);
+                    id++;
+                    form.reset();
+                }
+            }
+
+            function boxChecked(event) {
+                const element = event.target;
+                if (element.type === "checkbox") {
+                    if (element.checked) {
+                        console.log('if')
+                        element.parentNode.style.textDecoration = "line-through"
+                    } else {
+                        console.log('else')
+                        element.parentNode.style.textDecoration = "none"
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
