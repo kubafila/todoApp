@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>TODO List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="Stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="hero">
+        <div class="container">
+            <h1 class="text-center display-2">TODO List</h1>
+            <p class="lead text-center">Hi, what are we doing today?</p>
+            <div class="row justify-content-center"><button type="button" id='btn-all'
+                    class="btn btn-primary btn-filter">All</button><button id='btn-todo' type="button"
+                    class="btn btn-success btn-filter">To Do</button><button id='btn-done' type="button"
+                    class="btn btn-warning btn-filter">Done</button></div>
+            <div class="row">
+                <form id="form" class="col-8 mx-auto">
+                    <div class="input-group">
+                        <input class="form-control" id="input" placeholder="Task...">
+                        <span><button id="btn" type="submit" class="btn btn-primary">Submit</button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <ul id="list" class="col-8 mx-auto">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="getTasks.js"></script>
+</body>
+
+</html>
