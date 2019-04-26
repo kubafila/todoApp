@@ -1,12 +1,15 @@
 const { taskToTag } = require('../models/taskToTag');
 const express = require('express');
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const {Tag} = require('../models/tag') 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const tasksToTags = await taskToTag.find().sort('tagID');
-    res.send(tasksToTags);
-    // if (!tasksToTagsDocuments) return res.status(404).send('This task is not associated with any tag');
+router.get('/:id', async (req, res) => {
+    const tasksToTagsDocuments = await taskToTag.find({'taskID': mongoose.Types.ObjectId(req.params.id)});
+    if (!tasksToTagsDocuments[0]) return res.status(404).send('This task is not associated with any tag');
+    console.log(tasksToTagsDocuments[0])
+    const tagsDocuments = await Tag.findById(/*mongoose.Types.ObjectId(tasksToTagsDocuments[0].tagID*/ mongoose.Types.ObjectId('5cc2b244d1aafa2d0c2351e0'));
+    res.send(tagsDocuments);
     // const tags = await Tag.findById(mongoose.Types.ObjectId(tasksToTagsDocuments.tagID))
 });
 

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 
 const taskToTag = mongoose.model('taskToTag', new mongoose.Schema({
     task: {
-        type: String,
+        type: mongoose.Types.ObjectId,
     },
     tag: {
-        type: Boolean,
+        type: mongoose.Types.ObjectId,
     }
 }, {collection: 'taskToTag'}));
 
