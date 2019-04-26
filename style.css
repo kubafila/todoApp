@@ -51,3 +51,7 @@ input[type=checkbox] {
 .btn-filter {
     margin: 4.76px;
 }
+
+.li-done {
+    text-decoration: line-through;
+}
