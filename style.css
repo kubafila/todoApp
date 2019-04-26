@@ -30,22 +30,28 @@ h1 {
 ul {
     list-style: none;
     margin-top: 2rem;
-    border-top: 2px solid white;
+    border: 2px solid white;
     overflow: auto;
     max-height: 340px;
+	background-color:rgba(0,0,0,0.7);
+	border-radius:10px;
 }
 
 li {
     border-bottom: 1px solid white;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem
+    padding: 0.5rem 0;
+	margin-top:5px;
+}
+li:last-child{
+	border:none;
 }
 
 input[type=checkbox] {
     float: right;
-    height: 20px;
-    widows: 20px;
+    height: 30px;
+    width: 30px;
     border: 1px solid white;
+	margin 5px;
 }
 
 .btn-filter {
@@ -54,4 +60,14 @@ input[type=checkbox] {
 
 .li-done {
     text-decoration: line-through;
+}
+
+li .btn-danger{
+	transition : opacity 0.3s ease-in-out;
+	opacity:0;
+	margin 5px;
+}
+
+li:hover .btn-danger{
+	opacity:1;
 }
