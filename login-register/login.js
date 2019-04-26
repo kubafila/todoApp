@@ -67,7 +67,6 @@ signInForm.addEventListener('submit', e => {
                 }
             }
         }).catch(_ => {
-		console.log("error kurna");
             submit.disabled = false;
         });
     }
