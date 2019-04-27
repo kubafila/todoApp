@@ -9,9 +9,11 @@ const editGroup = document.getElementById("edit-group");
 const tagName = document.getElementById("tag-name");
 const tagColor = document.getElementById("tag-color");
 
+const dropdownTags= document.getElementById("dropdown-tags");
 const dropdownTagsItems = document.getElementById("dropdown-tags-items");
 const dropdownTagsButton = document.getElementById("dropdown-button-tags");
 
+const dropdownTasks= document.getElementById("dropdown-tasks");
 const dropdownTasksItems = document.getElementById("dropdown-tasks-items");
 const dropdownTasksButton = document.getElementById("dropdown-button-tasks");
 
@@ -25,6 +27,7 @@ const approveChangesButton = document.getElementById("btn-approve-tag-changes");
 
 //Czekam nad endpointy, chwilowo używam zadań zamiast tagów
 const allTagsEndpoint = "http://localhost:3000/api/tags";
+const allTasksEndpoint = "http://localhost:3000/api/tasks";
 const idTagEndpoint = "http://localhost:3000/api/tags/"
 
 //dostaje wartośc w selectDropdownItem()
@@ -79,7 +82,7 @@ function addToDropdown(text, id,color) {
 }
 
 function selectDropdownItem(){
-	for (let item of document.getElementsByClassName("dropdown-item")) 
+	for (let item of dropdownTags) 
 		item.addEventListener("click", (e) =>{
 			dropdownTagsButton.innerText = e.target.text
 			tagID = e.target.dataset.id;
@@ -88,26 +91,25 @@ function selectDropdownItem(){
 }
 function getTaskData() {
 
-	drop.innerText = "";
-	fetch(allTagsEndpoint)
+	dropdownTasksItems.innerText = "";
+	fetch(allTasksEndpoint)
 		.then(res => res.json())
 		.then(res => {
-			for (let tagObject of res)
-				addToDropdown(tagObject.name, tagObject._id,tagObject.color)
+			for (let taskObject of res)
+				addToTasksDropdown(taskObject.name, taskObject._id)
 
-			selectDropdownItem();
+			selectDropdownTaskItemItem();
 		})
 
 }
 
-function addToTasksDropdown(text, id,color) {
+function addToTasksDropdown(text, id) {
 	let tagItem = document.createElement("a");
 	tagItem.className = ("dropdown-item");
 	tagItem.href = "#";
 	tagItem.text = text;
 	tagItem.dataset.id = id;
-	tagItem.style.backgroundColor=color;
-	dropdownTagsItems.appendChild(tagItem);
+	dropdownTasksItems.appendChild(tagItem);
 
 	console.log(color);
 
@@ -116,7 +118,7 @@ function addToTasksDropdown(text, id,color) {
 function selectDropdownTaskItem(){
 	for (let item of document.getElementsByClassName("dropdown-item")) 
 		item.addEventListener("click", (e) =>{
-			dropdownTagsButton.innerText = e.target.text
+			dropdownTasksButton.innerText = e.target.text
 			tagID = e.target.dataset.id;
 			console.log(e.target.text,e.target.dataset.id);
 		} )
@@ -173,6 +175,7 @@ changeTagsSidebarVisibility();
 
 showTagPanelButton.addEventListener("click", changeTagsSidebarVisibility);
 dropdownTagsButton.addEventListener("click", getData)
+dropdownTasksButton.addEventListener("click", getTaskData)
 
 addTagButton.addEventListener("click", () => {
 	newTagMode = true;
