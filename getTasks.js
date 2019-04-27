@@ -28,6 +28,10 @@ window.onload = function () {
     btnAll.addEventListener('click', displayAll)
 
     function filterByDone(e) {
+        btnAll.className = "btn btn-sm btn-dark";
+        btnTodo.className = "btn btn-sm btn-dark";
+        btnDone.className = "btn btn-sm btn-primary active";
+        
         list.innerHTML = '';
 
         const tasks = allTasks.filter(el => el.isDone);
@@ -45,6 +49,9 @@ window.onload = function () {
     }
 
     function filterNotDone(e) {
+        btnAll.className = "btn btn-sm btn-dark";
+        btnTodo.className = "btn btn-sm btn-primary active";
+        btnDone.className = "btn btn-sm btn-dark ";
         list.innerHTML = '';
 
         const tasks = allTasks.filter(el => el.isDone === false);
@@ -56,6 +63,9 @@ window.onload = function () {
     }
 
     function displayAll(e) {
+        btnAll.className = "btn btn-sm btn-primary active";
+        btnTodo.className = "btn btn-sm btn-dark";
+        btnDone.className = "btn btn-sm btn-dark ";
         list.innerHTML = '';
         allTasks.forEach(task => {
             const item = createItem(task._id, task.name, task.isDone);

@@ -17,10 +17,10 @@
         <div class="row justify-content-center">
           <div class="form-group">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm btn-dark" id='btn-all'>All</button>
-              <button type="button" class="btn btn-sm btn-dark" id='btn-todo'>To do</button>
+              <button type="button" class="btn btn-sm btn-primary active" id='btn-all'>All</button>
+              <button type="button" class="btn btn-sm btn-dark "id='btn-todo'>To do</button>
               <button type="button" class="btn btn-sm btn-dark" id='btn-done'>Done</button>
-              <button type="button" class="btn btn-sm btn-light" id='btn-show-tags'>Tag Editor</button>
+              <button type="button" class="btn btn-sm btn-dark" id='btn-show-tags'>Tag Editor</button>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <button class="btn btn-sm  btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Wybierz tag
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-tag-select">
             <a class="dropdown-item" href="#">Tutaj</a>
             <a class="dropdown-item" href="#">Będzie</a>
             <a class="dropdown-item" href="#">Lista</a>
@@ -68,8 +68,8 @@
         </div>
  
 
-        <button class="btn btn-sm btn-outline-light" id="edit-tag">Edytuj</button>
-        <button class="btn btn-sm btn-outline-danger" id="remove-tag">Usuń</button>
+        <button class="btn btn-sm btn-outline-light" id="btn-edit-tag">Edytuj</button>
+        <button class="btn btn-sm btn-outline-danger" id="btn-remove-tag">Usuń</button>
         <br>
         <br>
         <button class="btn btn-sm btn-outline-success" id="add-tag">Dodaj nowy</button>
@@ -86,7 +86,7 @@
                     <input type="color" id="color-tag">
                 </label>
                     <br>
-                <button class="btn-outline-success btn-sm btn" id="approve-tag-changes">Zatwierdź</button>
+                <button class="btn-outline-success btn-sm btn" id="btn-approve-tag-changes">Zatwierdź</button>
 
             </div>
 
@@ -105,27 +105,31 @@
   <script src="getTasks.js"></script>
   <script>
     
-    let editGroupState = false;
-    let tagsSidebarState = true;
+    let editGroupVisibilityState = false;
+    let tagsSidebarVisibilityState = true;
 
+    const mainTaskList = document.getElementById("main-task-list");
     const editGroup = document.getElementById("edit-group");
-    const approveTagChanges = document.getElementById("approve-tag-changes");
     const colorTag = document.getElementById("color-tag");
+    const tagsSidebar = document.getElementById("tag-panel");
+    const dropdownTagSelect=document.getElementById("dropdown-tag-select");
+    const approveChangesButton = document.getElementById("btn-approve-tag-changes");
     const addTagButton = document.getElementById("add-tag");
     const showTagButton = document.getElementById("btn-show-tags");
-    const tagsSidebar = document.getElementById("tag-panel");
-    const mainTaskList = document.getElementById("main-task-list");
+    const removeTagButton = document.getElementById("btn-remove-tag");
     
-
-    function changeEditGroupState(){
-        editGroupState = !editGroupState;
-        editGroup.hidden = editGroupState;
+    const allTagsEndpoint = "http://localhost:3000/api/tags/";
+    const idTagEndpoint = "http://localhost:3000/api/tags/id"
+   
+    function changeEditGroupVisibility(){
+        editGroupVisibilityState = !editGroupVisibilityState;
+        editGroup.hidden = editGroupVisibilityState;
 
     }
 
-    function changeTagsSidebarState(){
-        tagsSidebarState = !tagsSidebarState;
-        if(tagsSidebarState == true){
+    function changeTagsSidebarVisibility(){
+        tagsSidebarVisibilityState = !tagsSidebarVisibilityState;
+        if(tagsSidebarVisibilityState == true){
           mainTaskList.className="col-md-9"
           tagsSidebar.hidden=false;
           showTagButton.innerText="Close Tag Editor"
@@ -139,7 +143,7 @@
     }
     function addTag(id, name, color, method){
         
-        fetch("http://localhost:3000/api/tags/", {
+        fetch(allTagsEndpoint, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -153,7 +157,7 @@
     }
     
     function editTag(id, name, color, method){
-        fetch("http://localhost:3000/api/tags/id" +id, {
+        fetch(idTagEndpoint +id, {
             method: 'put',
             headers: {
                 'Accept': 'application/json',
@@ -167,7 +171,7 @@
     }
     
     function removeTag(id, name, color, method){
-        fetch("http://localhost:3000/api/tags/id" +id, {
+        fetch(idTagEndpoint +id, {
             method: 'delete',
             headers: {
                 'Accept': 'application/json',
@@ -176,13 +180,13 @@
             })
     }
 
-    changeEditGroupState(); 
-    changeTagsSidebarState();
+    changeEditGroupVisibility(); 
+    changeTagsSidebarVisibility();
 
-    addTagButton.addEventListener("click", changeEditGroupState);
-    approveTagChanges.addEventListener("click", changeEditGroupState)
+    addTagButton.addEventListener("click", changeEditGroupVisibility);
+    approveChangesButton.addEventListener("click", changeEditGroupVisibility)
     colorTag.addEventListener("change", (e) =>console.log(colorTag.value) );
-    showTagButton.addEventListener("click", changeTagsSidebarState);
+    showTagButton.addEventListener("click", changeTagsSidebarVisibility);
   </script>
 
 </body>
