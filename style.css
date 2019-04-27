@@ -1,0 +1,76 @@
+body {
+    color: white;
+    font-size: 1.5rem;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+background-image: url("bg-1.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-width: 100vw;
+    min-height: 100vh;
+    
+}
+
+h1 {
+    margin-top: 2rem;
+    margin-bottom: 0;
+}
+
+.lead {
+    font-size: 2rem;
+}
+
+ul {
+    list-style: none;
+    margin-top: 2rem;
+    border: 2px solid white;
+    overflow: auto;
+    max-height: 340px;
+	background-color:rgba(0,0,0,0.7);
+	border-radius:10px;
+}
+
+li {
+    border-bottom: 1px solid white;
+    padding: 0.5rem 0;
+	margin-top:5px;
+}
+li:last-child{
+	border:none;
+}
+
+input[type=checkbox] {
+    float: right;
+    height: 30px;
+    width: 30px;
+    border: 1px solid white;
+	margin: 5px;
+}
+
+.btn-filter {
+    margin: 4.76px;
+}
+
+.li-done {
+    text-decoration: line-through;
+}
+
+li .btn-danger{
+	transition : opacity 0.3s ease-in-out;
+	opacity:0;
+	margin 5px;
+}
+
+li:hover .btn-danger{
+	opacity:1;
+}
+
+#tag-panel {
+  min-height:100vh;
+  background-color:#222;
+}
+
