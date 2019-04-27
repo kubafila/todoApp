@@ -8,10 +8,10 @@ const tagsSidebar = document.getElementById("tag-panel");
 const editGroup = document.getElementById("edit-group");
 const tagName = document.getElementById("tag-name");
 const tagColor = document.getElementById("tag-color");
-const dropdownMenuItems = document.getElementById("dropdown-menu-items");
+const dropdownMenuItems = document.getElementById("dropdown-tags-items");
 
 const showTagPanelButton = document.getElementById("btn-show-tags");
-const dropdownButton = document.getElementById("dropdown-button");
+const dropdownButton = document.getElementById("dropdown-button-tags");
 const addTagButton = document.getElementById("add-tag");
 const editTagButton = document.getElementById("btn-edit-tag");
 const removeTagButton = document.getElementById("btn-remove-tag");
