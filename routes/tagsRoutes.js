@@ -48,6 +48,7 @@ router.delete('/:id', async (req, res) => {
     const tag = await Tag.findByIdAndRemove(req.params.id);
 
     if (!tag) return res.status(404).send('The tag with the given ID was not found.');
+    else while(await taskToTag.findOneAndDelete({tag: mongoose.Types.ObjectId(req.params.id)}));
 
     res.send(tag);
 });
