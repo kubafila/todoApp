@@ -81,8 +81,8 @@ router.get('/:id/tags', async (req, res) => {
 router.delete('/:taskId/tags/:tagId', async (req, res) => {
     const relation = await taskToTag.findOneAndDelete(
         {
-            'task': mongoose.Types.ObjectId(req.params.taskId), 
-            'tag': mongoose.Types.ObjectId(req.params.tagId)
+            task : mongoose.Types.ObjectId(req.params.taskId), 
+            tag : mongoose.Types.ObjectId(req.params.tagId)
         }
     )
     if(!relation) return res.status(404).send('Relation between given IDs is not found.')
@@ -92,6 +92,14 @@ router.delete('/:taskId/tags/:tagId', async (req, res) => {
 router.post('/:taskId/tags/:tagId', async (req, res) => {
     const { error } = taskToTagValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
+    
+    const isExisting = Boolean(await taskToTag.findOne({
+        task : mongoose.Types.ObjectId(req.params.taskId),
+        tag : mongoose.Types.ObjectId(req.params.tagId)
+    }));
+    if(isExisting) {
+        return res.status(400).send('This relation is existing');
+    }
 
     let relation = new taskToTag({
         task: mongoose.Types.ObjectId(req.params.taskId),
