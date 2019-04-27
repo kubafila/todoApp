@@ -24,4 +24,4 @@ function validateTaskToTag(taskToTag) {
 }
 
 exports.taskToTag = taskToTag;
-exports.validate = validateTaskToTag;
+exports.taskToTagValidation = validateTaskToTag;

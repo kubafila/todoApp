@@ -50,4 +50,8 @@ router.delete('/:id', async (req, res) => {
     res.send(tag);
 });
 
+// 
+// relation tag - task
+// /api/tasks 
+
 module.exports = router;
