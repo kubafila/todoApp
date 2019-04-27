@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>TODO List</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="Stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
 </head>
-
 <body>
   <div class="container">
     <div class="row">
       <div class="col-md-9" id="main-task-list">
         <h1 class="text-center display-2">TODO List</h1>
-        <p class="lead text-center">Hi, what are we doing today?</p>
+        <p class="lead text-center">Hej, co masz dziś w planach?</p>
         <div class="row justify-content-center">
           <div class="form-group">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm btn-primary active" id='btn-all'>All</button>
-              <button type="button" class="btn btn-sm btn-dark "id='btn-todo'>To do</button>
-              <button type="button" class="btn btn-sm btn-dark" id='btn-done'>Done</button>
-              <button type="button" class="btn btn-sm btn-dark" id='btn-show-tags'>Tag Editor</button>
+              <button type="button" class="btn btn-sm btn-primary active" id='btn-all'>Wszytkie</button>
+              <button type="button" class="btn btn-sm btn-dark "id='btn-todo'>Do zrobienia</button>
+              <button type="button" class="btn btn-sm btn-dark" id='btn-done'>Zrobione</button>
+              <button type="button" class="btn btn-sm btn-dark" id='btn-show-tags'>Tagi</button>
             </div>
           </div>
         </div>
-
         <div class="row">
           
           <form id="form" class="col-8 mx-auto">
             <div class="input-group">
-              <input class="form-control" id="input" placeholder="Task...">
+              <input class="form-control" id="input" placeholder="Zadanie...">
               <span>
                 <div class="input-group-append">
-                  <button class="btn  btn-success" type="button" id="btn">Add Task</button>
+                  <button class="btn  btn-success" type="button" id="btn"><i class="fas fa-plus"></i> Dodaj zadanie</button>
                 </div>
               </span>
-
             </div>
           </form>
         </div>
@@ -46,9 +43,7 @@
       </div>
       <div class="col-md-3" id="tag-panel">
         <p class="lead text-center">Lista tagów</p>
-
      
-
 
         <div class="tag-list ">
       
@@ -61,143 +56,40 @@
             <a class="dropdown-item" href="#">Będzie</a>
             <a class="dropdown-item" href="#">Lista</a>
             <a class="dropdown-item" href="#">Tagów</a>
-
+            <a class="dropdown-item" href="#">(Kiedy powstaną endpointy)</a>
 
           </div>
         </div>
         </div>
  
-
-        <button class="btn btn-sm btn-outline-light" id="btn-edit-tag">Edytuj</button>
-        <button class="btn btn-sm btn-outline-danger" id="btn-remove-tag">Usuń</button>
+        <button class="btn btn-sm btn-outline-light" id="btn-edit-tag"><i class="fas fa-pen"></i> Edytuj</button>
+        <button class="btn btn-sm btn-outline-danger" id="btn-remove-tag"><i class="far fa-trash-alt"></i> Usuń</button>
         <br>
         <br>
-        <button class="btn btn-sm btn-outline-success" id="add-tag">Dodaj nowy</button>
+        <button class="btn btn-sm btn-outline-success" id="add-tag"><i class="fas fa-plus"></i> Dodaj nowy</button>
         <br>
         <br>
-
             <div id="edit-group">
-
                 <label>Nazwa tagu:
-                    <input class="form-control form-control-sm" type="text">
+                    <input class="form-control form-control-sm" type="text" id="tag-name">
                 </label>
         
                 <label>Kolor tagu:
-                    <input type="color" id="color-tag">
+                    <input type="color" id="tag-color">
                 </label>
                     <br>
-                <button class="btn-outline-success btn-sm btn" id="btn-approve-tag-changes">Zatwierdź</button>
-
+                <button class="btn-outline-success btn-sm btn" id="btn-approve-tag-changes"><i class="far fa-check-circle"></i> Zatwierdź</button>
             </div>
-
  
-
 
       </div>
     </div>
-
   </div>
-
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="getTasks.js"></script>
-  <script>
-    
-    let editGroupVisibilityState = false;
-    let tagsSidebarVisibilityState = true;
-
-    const mainTaskList = document.getElementById("main-task-list");
-    const editGroup = document.getElementById("edit-group");
-    const colorTag = document.getElementById("color-tag");
-    const tagsSidebar = document.getElementById("tag-panel");
-    const dropdownTagSelect=document.getElementById("dropdown-tag-select");
-    const approveChangesButton = document.getElementById("btn-approve-tag-changes");
-    const addTagButton = document.getElementById("add-tag");
-    const showTagButton = document.getElementById("btn-show-tags");
-    const removeTagButton = document.getElementById("btn-remove-tag");
-    const editTagButton = document.getElementById("btn-edit-tag");
-    
-    
-    const allTagsEndpoint = "http://localhost:3000/api/tags/";
-    const idTagEndpoint = "http://localhost:3000/api/tags/id"
-   
-    function changeEditGroupVisibility(){
-        editGroupVisibilityState = !editGroupVisibilityState;
-        editGroup.hidden = editGroupVisibilityState;
-
-    }
-
-    function changeTagsSidebarVisibility(){
-        tagsSidebarVisibilityState = !tagsSidebarVisibilityState;
-        if(tagsSidebarVisibilityState == true){
-          mainTaskList.className="col-md-9"
-          tagsSidebar.hidden=false;
-          showTagButton.innerText="Close Tag Editor"
-
-          showTagButton.className="btn btn-sm btn-danger active"
-          
-        }
-        else{
-          tagsSidebar.hidden=true;
-          mainTaskList.className="col-md-12"
-          showTagButton.innerText="Tag Editor"
-     
-          showTagButton.className="btn btn-sm btn-dark"
-
-        }
-    }
-    function addTag(id, name, color, method){
-        
-        fetch(allTagsEndpoint, {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: taskName,
-                color: colorTag.value
-            })
-            })
-    }
-    
-    function editTag(id, name, color, method){
-
-        fetch(idTagEndpoint.concat(id), {
-            method: 'put',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: taskName,
-                color: colorTag.value
-            })
-            })
-    }
-    
-    function removeTag(id, name, color, method){
-        fetch(idTagEndpoint.concat(id), {
-            method: 'delete',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-            })
-    }
-
-    changeEditGroupVisibility(); 
-    changeTagsSidebarVisibility();
-
-    addTagButton.addEventListener("click", changeEditGroupVisibility);
-    editTagButton.addEventListener("click", changeEditGroupVisibility);
-    approveChangesButton.addEventListener("click", changeEditGroupVisibility)
-    colorTag.addEventListener("change", (e) =>console.log(colorTag.value) );
-    showTagButton.addEventListener("click", changeTagsSidebarVisibility);
-  </script>
-
+  <script src="tagsList.js"></script>
 </body>
-
 </html>
