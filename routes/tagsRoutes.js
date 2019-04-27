@@ -1,4 +1,5 @@
 const {Tag, validateTag} = require('../models/tag');
+const { taskToTag, taskToTagValidation } = require('../models/taskToTag');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
