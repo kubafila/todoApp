@@ -29,6 +29,7 @@ const approveChangesButton = document.getElementById("btn-approve-tag-changes");
 const allTagsEndpoint = "http://localhost:3000/api/tags";
 const allTasksEndpoint = "http://localhost:3000/api/tasks";
 const idTagEndpoint = "http://localhost:3000/api/tags/"
+const assignTagToTaskEndpoint = "http://localhost:3000/api/tasks";
 
 //dostaje wartośc w selectDropdownItem()
 let tagID ="";
@@ -163,7 +164,18 @@ function removeTag() {
 
 }
 
-
+function assignTagToTask(){
+	console.log(`http://localhost:3000/api/tasks/${taskID}/tags/${tagID}`)
+fetch(`http://localhost:3000/api/tasks/${taskID}/tags/${tagID}`, {
+	method: 'post',
+	headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
+.then(x => x.json())
+.then(x => console.log(x));
+}
 
 changeEditGroupVisibility();
 changeTagsSidebarVisibility();
@@ -195,6 +207,7 @@ approveChangesButton.addEventListener("click", () => {
 	}
 	if (newTagMode) {
 		addTag();
+		assignTagToTask();
 		console.log(`Dodano nowy tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
 	}
 	newTagMode = false;
