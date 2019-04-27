@@ -14,8 +14,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    console.log(req.body)
-    const {error} = validateTag(req.body);
+    const { error } = validateTag(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     let tag = new Tag({
