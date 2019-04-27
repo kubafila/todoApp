@@ -88,7 +88,7 @@ router.delete('/:taskId/tags/:tagId', async (req, res) => {
     res.send(relation);
 });
 
-router.post('/:taskIdgit/tags/:tagId', async (req, res) => {
+router.post('/:taskId/tags/:tagId', async (req, res) => {
     const { error } = taskToTagValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
