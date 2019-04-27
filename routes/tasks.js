@@ -78,8 +78,13 @@ router.get('/:id/tags', async (req, res) => {
 });
 
 router.delete('/:taskId/tags/:tagId', async (req, res) => {
-    const relation = await taskToTag.findOneAndDelete({'task': req.params.taskId, 'tag': req.params.tagId})
-    if(!relation) return res.status(404).send('The task with the given ID was not found.')
+    const relation = await taskToTag.findOneAndDelete(
+        {
+            'task': mongoose.Types.ObjectId(req.params.taskId), 
+            'tag': mongoose.Types.ObjectId(req.params.tagId)
+        }
+    )
+    if(!relation) return res.status(404).send('Relation between given IDs is not found.')
     res.send(relation);
 });
 
@@ -93,6 +98,6 @@ router.post('/:taskIdgit/tags/:tagId', async (req, res) => {
     });
     relation = await relation.save();
 
-    res.send(task);
+    res.send(relation);
 });
 module.exports = router;
