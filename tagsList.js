@@ -32,6 +32,7 @@ const idTagEndpoint = "http://localhost:3000/api/tags/"
 
 //dostaje wartośc w selectDropdownItem()
 let tagID ="";
+let taskID ="";
 
 function changeTagsSidebarVisibility() {
 	tagsSidebarVisibilityState = !tagsSidebarVisibilityState;
@@ -70,23 +71,22 @@ function getData() {
 
 function addToDropdown(text, id,color) {
 	let tagItem = document.createElement("a");
-	tagItem.className = ("dropdown-item");
+	tagItem.className = ("dropdown-item tag-item");
 	tagItem.href = "#";
 	tagItem.text = text;
 	tagItem.dataset.id = id;
 	tagItem.style.backgroundColor=color;
 	dropdownTagsItems.appendChild(tagItem);
 
-	console.log(color);
 
 }
 
 function selectDropdownItem(){
-	for (let item of dropdownTags) 
+	for (let item of document.getElementsByClassName("tag-item"))
 		item.addEventListener("click", (e) =>{
 			dropdownTagsButton.innerText = e.target.text
 			tagID = e.target.dataset.id;
-			console.log(e.target.text,e.target.dataset.id);
+		
 		} )
 }
 function getTaskData() {
@@ -98,29 +98,26 @@ function getTaskData() {
 			for (let taskObject of res)
 				addToTasksDropdown(taskObject.name, taskObject._id)
 
-			selectDropdownTaskItemItem();
+			selectDropdownTaskItem();
 		})
 
 }
 
 function addToTasksDropdown(text, id) {
 	let tagItem = document.createElement("a");
-	tagItem.className = ("dropdown-item");
+	tagItem.className = ("dropdown-item task-item");
 	tagItem.href = "#";
 	tagItem.text = text;
 	tagItem.dataset.id = id;
 	dropdownTasksItems.appendChild(tagItem);
 
-	console.log(color);
-
 }
 
 function selectDropdownTaskItem(){
-	for (let item of document.getElementsByClassName("dropdown-item")) 
+	for (let item of document.getElementsByClassName("task-item")) 
 		item.addEventListener("click", (e) =>{
 			dropdownTasksButton.innerText = e.target.text
-			tagID = e.target.dataset.id;
-			console.log(e.target.text,e.target.dataset.id);
+			taskID = e.target.dataset.id;
 		} )
 }
 
@@ -137,8 +134,7 @@ function addTag() {
 			color: tagColor.value
 		})
 	})
-	.then(res =>res.json())
-	.then(m => console.log(m));
+	
 }
 
 function editTag() {
@@ -164,8 +160,7 @@ function removeTag() {
 			'Content-Type': 'application/json'
 		}
 	})
-	.then(x =>x.json())
-	.then(x => console.log(x))
+
 }
 
 
@@ -193,6 +188,7 @@ editTagButton.addEventListener("click", () => {
 
 approveChangesButton.addEventListener("click", () => {
 	changeEditGroupVisibility();
+	console.log(tagID,taskID);
 	if (editTagMode) {
 		editTag();
 		console.log(`Edytowano tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
