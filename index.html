@@ -13,20 +13,27 @@
         <div class="container">
             <h1 class="text-center display-2">TODO List</h1>
             <p class="lead text-center">Hi, what are we doing today?</p>
-            <div class="row justify-content-center"><button type="button" id='btn-all'
-                    class="btn btn-primary btn-filter">All</button><button id='btn-todo' type="button"
-                    class="btn btn-success btn-filter">To Do</button><button id='btn-done' type="button"
-                    class="btn btn-warning btn-filter">Done</button></div>
-            <div class="row">
-                <form id="form" class="col-8 mx-auto">
-                    <div class="input-group">
-                        <input class="form-control" id="input" placeholder="Task...">
-                        <span><button id="btn" type="submit" class="btn btn-primary">Submit</button>
-                        </span>
+        <div class="row justify-content-center">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-sm btn-dark" id='btn-all'>All</button>
+            <button type="button" class="btn btn-sm btn-dark" id='btn-todo'>To do</button>
+            <button type="button" class="btn btn-sm btn-dark" id='btn-done'>Done</button>
+          </div>
+        </div>
+                    <div class="row">
+          
+          <form id="form" class="col-8 mx-auto">
+            <div class="input-group">
+              <input class="form-control" id="input" placeholder="Task...">
+              <span>
+                <div class="input-group-append">
+                  <button class="btn  btn-success" type="button" id="btn">Add Task</button>
+                </div>
+              </span>
 
-                    </div>
-                </form>
             </div>
+          </form>
+        </div>
             <div class="row">
                 <ul id="list" class="col-8 mx-auto">
                 </ul>
