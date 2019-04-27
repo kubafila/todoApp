@@ -4,9 +4,13 @@ const mongoose = require('mongoose');
 const taskToTag = mongoose.model('taskToTag', new mongoose.Schema({
     task: {
         type: mongoose.Types.ObjectId,
+        ref: 'Task',
+        require: true
     },
     tag: {
         type: mongoose.Types.ObjectId,
+        ref: 'Tag',
+        require: true
     }
 }, {collection: 'taskToTag'}));
 

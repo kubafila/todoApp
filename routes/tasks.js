@@ -2,7 +2,9 @@ const {
     Task,
     validate
 } = require('../models/task');
+const { taskToTag } = require('../models/taskToTag');
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -57,6 +59,22 @@ router.delete('/:id', async (req, res) => {
     if (!task) return res.status(404).send('The task with the given ID was not found.');
 
     res.send(task);
+});
+
+// 
+// relation tag - task
+// 
+
+router.get('/:id/tags', async (req, res) => {
+    taskToTag.find({'task': mongoose.Types.ObjectId(req.params.id)})
+        .populate('tag')
+        .exec()
+        .then( docs => {
+            const tags = docs.map(doc => {
+                return doc.tag;
+            })
+            res.send(tags);
+    })
 });
 
 module.exports = router;
