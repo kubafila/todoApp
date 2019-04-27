@@ -245,19 +245,32 @@ editTagButton.addEventListener("click", () => {
 approveChangesButton.addEventListener("click", () => {
 	changeEditGroupVisibility();
 	console.log(tagID,taskID);
-	if (editTagMode) {
-		editTag();
+	if(tagName.value){
+		if (editTagMode) {
+			editTag();
+
+			assignTagToTask();
+			console.log(`Edytowano tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
+		}
+		if (newTagMode) {
+			addTag();
+			console.log(`Dodano nowy tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
+			approveChangesButton.hidden = true;
+		}
+	}
 		
-		assignTagToTask();
-		console.log(`Edytowano tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
-	}
-	if (newTagMode) {
-		addTag();
-		console.log(`Dodano nowy tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
-		approveChangesButton.hidden=true;
-	}
+		
+
 	newTagMode = false;
 	editTagMode = false;
+	dropdownTagsButton.innerText = "Wybierz tag";
+	dropdownTasksButton.innerText = "Do jakiego zadania przypisać ?"
 })
 
-removeTagButton.addEventListener("click", removeTag);
+removeTagButton.addEventListener("click", () => {
+	removeTag();
+	getData();
+	editTagButton.hidden = true;
+	removeTagButton.hidden = true;
+	dropdownTagsButton.innerText = "Wybierz tag";
+});
