@@ -22,7 +22,7 @@ function validateTag(tag) {
         color: Joi.string().min(1).max(35).required(),
     };
 
-    return Joi.validate(Tag, schema);
+    return Joi.validate(tag, schema);
 }
 
 exports.Tag = Tag;
