@@ -81,16 +81,18 @@ router.delete('/:taskId/tags/:tagId', async (req, res) => {
     const relation = await taskToTag.findOneAndDelete({'task': req.params.taskId, 'tag': req.params.tagId})
     if(!relation) return res.status(404).send('The task with the given ID was not found.')
     res.send(relation);
-})
+});
 
-router.post('/:taskId/tags/:tagId', async (req, res) => {
+router.post('/:taskIdgit/tags/:tagId', async (req, res) => {
     const { error } = taskToTagValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
     let relation = new taskToTag({
-        task: req.params.taskId,
-        tag: req.params.tagId
+        task: mongoose.Types.ObjectId(req.params.taskId),
+        tag: mongoose.Types.ObjectId(req.params.tagId)
     });
-    
-})
+    relation = await relation.save();
+
+    res.send(task);
+});
 module.exports = router;
