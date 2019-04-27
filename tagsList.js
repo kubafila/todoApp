@@ -19,8 +19,8 @@ const approveChangesButton = document.getElementById("btn-approve-tag-changes");
 
 
 //Czekam nad endpointy, chwilowo używam zadań zamiast tagów
-const allTagsEndpoint = "http://localhost:3000/api/tasks";
-const idTagEndpoint = "http://localhost:3000/api/tasks/"
+const allTagsEndpoint = "http://localhost:3000/api/tags";
+const idTagEndpoint = "http://localhost:3000/api/tags/"
 
 //dostaje wartośc w selectDropdownItem()
 let tagID ="";
@@ -53,10 +53,23 @@ function getData() {
 		.then(res => res.json())
 		.then(res => {
 			for (let tagObject of res)
-				addToDropdown(tagObject.name, tagObject._id)
+				addToDropdown(tagObject.name, tagObject._id,tagObject.color)
 
 			selectDropdownItem();
 		})
+
+}
+
+function addToDropdown(text, id,color) {
+	let tagItem = document.createElement("a");
+	tagItem.className = ("dropdown-item");
+	tagItem.href = "#";
+	tagItem.text = text;
+	tagItem.dataset.id = id;
+	tagItem.style.backgroundColor=color;
+	dropdownMenuItems.appendChild(tagItem);
+
+	console.log(color);
 
 }
 
@@ -79,7 +92,7 @@ function addTag() {
 		},
 		body: JSON.stringify({
 			name: tagName.value,
-			// color: "#ffffff"
+			color: tagColor.value
 		})
 	})
 	.then(res =>res.json())
@@ -95,7 +108,7 @@ function editTag() {
 		},
 		body: JSON.stringify({
 			name: tagName.value,
-			// color: tagColor.value
+			color: tagColor.value
 		})
 	})
 }
@@ -113,15 +126,7 @@ function removeTag() {
 	.then(x => console.log(x))
 }
 
-function addToDropdown(text,id){
-	let tagItem = document.createElement("a");
-	tagItem.className=("dropdown-item");
-	tagItem.href="#";
-	tagItem.text = text;
-	tagItem.dataset.id=id;
-	dropdownMenuItems.appendChild(tagItem);
 
-}
 
 changeEditGroupVisibility();
 changeTagsSidebarVisibility();
