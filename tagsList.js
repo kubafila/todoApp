@@ -203,6 +203,7 @@ approveChangesButton.addEventListener("click", () => {
 	console.log(tagID,taskID);
 	if (editTagMode) {
 		editTag();
+		assignTagToTask();
 		console.log(`Edytowano tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
 	}
 	if (newTagMode) {

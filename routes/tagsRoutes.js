@@ -1,4 +1,6 @@
 const {Tag, validateTag} = require('../models/tag');
+const { taskToTag, taskToTagValidation } = require('../models/taskToTag');
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
@@ -50,4 +52,44 @@ router.delete('/:id', async (req, res) => {
     res.send(tag);
 });
 
+
+// 
+// relation tag - task
+// /api/tasks 
+
+router.get('/:id/tasks', async (req, res) => {
+    taskToTag.find({'tag': mongoose.Types.ObjectId(req.params.id)})
+        .populate('task')
+        .exec()
+        .then( docs => {
+            const tags = docs.map(doc => {
+                return doc.task;
+            })
+            res.send(tags);
+    })
+});
+
+router.delete('/:tagId/tasks/:taskId', async (req, res) => {
+    const relation = await taskToTag.findOneAndDelete(
+        {
+            'task': mongoose.Types.ObjectId(req.params.taskId), 
+            'tag': mongoose.Types.ObjectId(req.params.tagId)
+        }
+    )
+    if(!relation) return res.status(404).send('Relation between given IDs is not found')
+    res.send(relation);
+});
+
+router.post('/:tagId/tasks/:taskId', async (req, res) => {
+    const { error } = taskToTagValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    let relation = new taskToTag({
+        task: mongoose.Types.ObjectId(req.params.taskId),
+        tag: mongoose.Types.ObjectId(req.params.tagId)
+    });
+    relation = await relation.save();
+
+    res.send(relation);
+});
 module.exports = router;
