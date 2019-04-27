@@ -35,6 +35,17 @@ const assignTagToTaskEndpoint = "http://localhost:3000/api/tasks";
 let tagID ="";
 let taskID ="";
 
+
+//schowanie przycisków przed wyborem tagu
+editTagButton.hidden = true;
+removeTagButton.hidden = true;
+approveChangesButton.hidden=true;
+
+let tagSelected = false;
+let taskSelected = false;
+
+
+
 function changeTagsSidebarVisibility() {
 	tagsSidebarVisibilityState = !tagsSidebarVisibilityState;
 	if (tagsSidebarVisibilityState == true) {
@@ -62,10 +73,21 @@ function getData() {
 	fetch(allTagsEndpoint)
 		.then(res => res.json())
 		.then(res => {
-			for (let tagObject of res)
-				addToDropdown(tagObject.name, tagObject._id,tagObject.color)
+			if(res.length >0){
 
-			selectDropdownItem();
+
+				for (let tagObject of res)
+					addToDropdown(tagObject.name, tagObject._id, tagObject.color)
+
+				selectDropdownItem();
+
+					
+			}
+			else{
+				editTagButton.hidden= true;
+				removeTagButton.hidden = true;
+				
+			}
 		})
 
 }
@@ -87,6 +109,8 @@ function selectDropdownItem(){
 		item.addEventListener("click", (e) =>{
 			dropdownTagsButton.innerText = e.target.text
 			tagID = e.target.dataset.id;
+			editTagButton.hidden = false;
+			removeTagButton.hidden = false;
 		
 		} )
 }
@@ -96,10 +120,21 @@ function getTaskData() {
 	fetch(allTasksEndpoint)
 		.then(res => res.json())
 		.then(res => {
-			for (let taskObject of res)
-				addToTasksDropdown(taskObject.name, taskObject._id)
 
-			selectDropdownTaskItem();
+			if (res.length > 0) {
+
+
+				for (let taskObject of res)
+					addToTasksDropdown(taskObject.name, taskObject._id)
+
+				selectDropdownTaskItem();
+
+
+			} else {
+				approveChangesButton.hidden = true;
+			}
+
+		
 		})
 
 }
@@ -119,6 +154,7 @@ function selectDropdownTaskItem(){
 		item.addEventListener("click", (e) =>{
 			dropdownTasksButton.innerText = e.target.text
 			taskID = e.target.dataset.id;
+			approveChangesButton.hidden = false;
 		} )
 }
 
@@ -165,7 +201,7 @@ function removeTag() {
 }
 
 function assignTagToTask(){
-	console.log(`http://localhost:3000/api/tasks/${taskID}/tags/${tagID}`)
+	
 fetch(`http://localhost:3000/api/tasks/${taskID}/tags/${tagID}`, {
 	method: 'post',
 	headers: {
@@ -181,12 +217,19 @@ changeEditGroupVisibility();
 changeTagsSidebarVisibility();
 
 showTagPanelButton.addEventListener("click", changeTagsSidebarVisibility);
-dropdownTagsButton.addEventListener("click", getData)
-dropdownTasksButton.addEventListener("click", getTaskData)
+dropdownTagsButton.addEventListener("click", () =>{
+	getData();
+
+})
+dropdownTasksButton.addEventListener("click", () => {
+	getTaskData()
+})
 
 addTagButton.addEventListener("click", () => {
 	newTagMode = true;
 	editTagMode = false;
+	dropdownTasks.hidden = true;
+	approveChangesButton.hidden=false;
 	changeEditGroupVisibility()
 
 });
@@ -194,6 +237,7 @@ addTagButton.addEventListener("click", () => {
 editTagButton.addEventListener("click", () => {
 	editTagMode = true;
 	newTagMode = false;
+	dropdownTasks.hidden = false;
 	changeEditGroupVisibility()
 });
 
@@ -203,13 +247,14 @@ approveChangesButton.addEventListener("click", () => {
 	console.log(tagID,taskID);
 	if (editTagMode) {
 		editTag();
+		
 		assignTagToTask();
 		console.log(`Edytowano tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
 	}
 	if (newTagMode) {
 		addTag();
-		assignTagToTask();
 		console.log(`Dodano nowy tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
+		approveChangesButton.hidden=true;
 	}
 	newTagMode = false;
 	editTagMode = false;
