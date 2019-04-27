@@ -46,22 +46,15 @@
      
 
         <div class="tag-list ">
-      
-        <div class="dropdown">
-          <button class="btn btn-sm  btn-outline-light dropdown-toggle" type="button" id="dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Wybierz tag
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-menu-items">
-            <a class="dropdown-item" href="#">Tutaj</a>
-            <a class="dropdown-item" href="#">Będzie</a>
-            <a class="dropdown-item" href="#">Lista</a>
-            <a class="dropdown-item" href="#">Tagów</a>
-            <a class="dropdown-item" href="#">(Kiedy powstaną endpointy)</a>
-            <a class="dropdown-item" href="#">(Póki co używam zadań)</a>
-            <div class="dropdown-divider"></div>
-
+        
+          <div class="dropdown" id="dropdown-tags">
+            <button class="btn btn-sm  btn-outline-light dropdown-toggle" type="button" id="dropdown-button-tags" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Wybierz tag
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-tags-items">
+            </div>
           </div>
-        </div>
+
         </div>
  
         <button class="btn btn-sm btn-outline-light" id="btn-edit-tag"><i class="fas fa-pen"></i> Edytuj</button>
@@ -77,8 +70,17 @@
                 </label>
         
                 <label>Kolor tagu:
-                    <input type="color" id="tag-color">
+                    <input type="color" id="tag-color" alue="#f6b73c">
                 </label>
+
+                <div class="dropdown" id="dropdown-tasks">
+                  <button class="btn btn-sm  btn-outline-light dropdown-toggle" type="button" id="dropdown-button-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Do jakiego zadania przypisać ?
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-tasks-items">
+                  </div>
+                </div>
+
                     <br>
                 <button class="btn-outline-success btn-sm btn" id="btn-approve-tag-changes"><i class="far fa-check-circle"></i> Zatwierdź</button>
             </div>
