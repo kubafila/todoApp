@@ -8,10 +8,15 @@ const tagsSidebar = document.getElementById("tag-panel");
 const editGroup = document.getElementById("edit-group");
 const tagName = document.getElementById("tag-name");
 const tagColor = document.getElementById("tag-color");
-const dropdownMenuItems = document.getElementById("dropdown-tags-items");
+
+const dropdownTagsItems = document.getElementById("dropdown-tags-items");
+const dropdownTagsButton = document.getElementById("dropdown-button-tags");
+
+const dropdownTasksItems = document.getElementById("dropdown-tasks-items");
+const dropdownTasksButton = document.getElementById("dropdown-button-tasks");
+
 
 const showTagPanelButton = document.getElementById("btn-show-tags");
-const dropdownButton = document.getElementById("dropdown-button-tags");
 const addTagButton = document.getElementById("add-tag");
 const editTagButton = document.getElementById("btn-edit-tag");
 const removeTagButton = document.getElementById("btn-remove-tag");
@@ -48,7 +53,7 @@ function changeEditGroupVisibility() {
 
 function getData() {
 
-	dropdownMenuItems.innerText = "";
+	dropdownTagsItems.innerText = "";
 	fetch(allTagsEndpoint)
 		.then(res => res.json())
 		.then(res => {
@@ -67,7 +72,7 @@ function addToDropdown(text, id,color) {
 	tagItem.text = text;
 	tagItem.dataset.id = id;
 	tagItem.style.backgroundColor=color;
-	dropdownMenuItems.appendChild(tagItem);
+	dropdownTagsItems.appendChild(tagItem);
 
 	console.log(color);
 
@@ -76,7 +81,42 @@ function addToDropdown(text, id,color) {
 function selectDropdownItem(){
 	for (let item of document.getElementsByClassName("dropdown-item")) 
 		item.addEventListener("click", (e) =>{
-			dropdownButton.innerText = e.target.text
+			dropdownTagsButton.innerText = e.target.text
+			tagID = e.target.dataset.id;
+			console.log(e.target.text,e.target.dataset.id);
+		} )
+}
+function getTaskData() {
+
+	drop.innerText = "";
+	fetch(allTagsEndpoint)
+		.then(res => res.json())
+		.then(res => {
+			for (let tagObject of res)
+				addToDropdown(tagObject.name, tagObject._id,tagObject.color)
+
+			selectDropdownItem();
+		})
+
+}
+
+function addToTasksDropdown(text, id,color) {
+	let tagItem = document.createElement("a");
+	tagItem.className = ("dropdown-item");
+	tagItem.href = "#";
+	tagItem.text = text;
+	tagItem.dataset.id = id;
+	tagItem.style.backgroundColor=color;
+	dropdownTagsItems.appendChild(tagItem);
+
+	console.log(color);
+
+}
+
+function selectDropdownTaskItem(){
+	for (let item of document.getElementsByClassName("dropdown-item")) 
+		item.addEventListener("click", (e) =>{
+			dropdownTagsButton.innerText = e.target.text
 			tagID = e.target.dataset.id;
 			console.log(e.target.text,e.target.dataset.id);
 		} )
@@ -132,7 +172,7 @@ changeEditGroupVisibility();
 changeTagsSidebarVisibility();
 
 showTagPanelButton.addEventListener("click", changeTagsSidebarVisibility);
-dropdownButton.addEventListener("click", getData)
+dropdownTagsButton.addEventListener("click", getData)
 
 addTagButton.addEventListener("click", () => {
 	newTagMode = true;
@@ -147,7 +187,6 @@ editTagButton.addEventListener("click", () => {
 	changeEditGroupVisibility()
 });
 
-removeTagButton.addEventListener("click", removeTag);
 
 approveChangesButton.addEventListener("click", () => {
 	changeEditGroupVisibility();
@@ -163,3 +202,4 @@ approveChangesButton.addEventListener("click", () => {
 	editTagMode = false;
 })
 
+removeTagButton.addEventListener("click", removeTag);
