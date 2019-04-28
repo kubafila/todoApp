@@ -53,6 +53,7 @@ window.onload = function () {
         });
         
         liElement.dataset.id=task._id;
+        liElement.dataset.name=task.name;
         liElement.innerText=task.name;
         
         
@@ -104,13 +105,13 @@ window.onload = function () {
 
         for (let button of document.getElementsByClassName("check-task"))
             button.addEventListener("click", (e)=>{
-                checkTask(e.target.parentNode.dataset.id,e.target.parentNode.innerText)
+                checkTask(e.target.parentNode.dataset.id,e.target.parentNode.dataset.name)
                 
             })
 
         for (let button of document.getElementsByClassName("undo-task"))
             button.addEventListener("click", (e)=>{
-                undoTask(e.target.parentNode.dataset.id, e.target.parentNode.innerText)
+                undoTask(e.target.parentNode.dataset.id, e.target.parentNode.dataset.name)
             })
         
      
