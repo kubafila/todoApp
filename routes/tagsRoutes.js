@@ -19,6 +19,10 @@ router.post('/', async (req, res) => {
     const { error } = validateTag(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
+    // Checking if tag exists
+    const isExisting = Boolean(await Tag.findOne({name: req.body.name}));
+    if(isExisting) return res.status(400).send('This tag already exists');
+    
     let tag = new Tag({
         name: req.body.name,
         color: req.body.color
