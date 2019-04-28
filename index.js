@@ -12,6 +12,7 @@ const app = express();
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+  //w terminalu: export todo_jwtPrivateKey=todoApp_jwtPrivateKey
   process.exit(1);
 }
 
