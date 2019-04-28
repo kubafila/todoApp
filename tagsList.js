@@ -287,6 +287,7 @@ removeTagButton.addEventListener("click", () => {
 	getData();
 	editTagButton.hidden = true;
 	removeTagButton.hidden = true;
+	editGroup.hidden=true;
 	dropdownTagsButton.innerText = "Wybierz tag";
 });
 
