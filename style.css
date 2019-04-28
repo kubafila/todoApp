@@ -59,13 +59,14 @@ input[type=checkbox] {
     text-decoration: line-through;
 }
 
-li .btn-outline-danger{
+li .action-button {
 	transition : opacity 0.3s ease-in-out;
 	opacity:0;
-	margin 5px;
+    margin-right: 20px;
+    float: right;
 }
 
-li:hover .btn-outline-danger {
+li:hover .action-button {
 	opacity:1;
 }
 
@@ -96,4 +97,9 @@ li:hover .btn-outline-danger {
     font-size: 1.3rem;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
+}
+button>* {
+    /* //unikanie klinięcie elementu <i> w button - font awsome */
+    /* https://css-tricks.com/slightly-careful-sub-elements-clickable-things/ */
+    pointer-events: none;
 }

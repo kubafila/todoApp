@@ -29,6 +29,7 @@ window.onload = function () {
             }
 
             tasks.forEach(createTaskElement);
+            addActionToButtons();
         });
    }
 
@@ -43,38 +44,67 @@ window.onload = function () {
         .then(res => {
             //jeżeli są tagi
             if(res.length >0){
-               for(let i = 0; i <= res.length; i++)
-                   liElement.appendChild(createTag(res[i]));
+               for(let i = 0; i <= res.length; i++){
+                   if(res[i])
+                    liElement.appendChild(createTag(res[i]));
+               }
             }
         });
         
         liElement.dataset.id=task._id;
         liElement.innerText=task.name;
         
-        let checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
+        
 
         let deleteButton = document.createElement("button");
-        deleteButton.classList="btn btn-outline-danger ";
-        deleteButton.innerText="x";
+        deleteButton.classList="btn btn-outline-danger action-button delete-task";
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+        
+        let checkButton = document.createElement("button");
+        checkButton.classList = "btn btn-outline-success action-button check-task";
+        checkButton.innerHTML = `<i class="fas fa-check"></i>`;
+
+        let undoButton = document.createElement("button");
+        undoButton.classList = "btn btn-outline-primary action-button undo-task";
+        undoButton.innerHTML = `<i class="fas fa-undo-alt"></i>`;
+
         liElement.appendChild(deleteButton);
-        liElement.appendChild(checkbox);
-        if(task.isDone)
+        if(task.isDone === false){
+            liElement.appendChild(checkButton);
+            
+        }
+        
+        if(task.isDone){
+            liElement.appendChild(undoButton);
             liElement.className="done";
+        }
         list.appendChild(liElement);
 
     }
 
     function createTag(tag)
     {
-        const tagElement = document.createElement("span");
-        tagElement.innerHTML=tag.name;
-        tagElement.style.backgroundColor=tag.color;
-        tagElement.className = "badge badge-pill "
-        return tagElement;
+        if(tag)
+        {
+            const tagElement = document.createElement("span");
+            tagElement.innerHTML = tag.name;
+            tagElement.style.backgroundColor = tag.color;
+            tagElement.className = "badge badge-pill "
+            return tagElement;
+        }
+       
     }
   
-  
+    function addActionToButtons() {
+        for (let button of document.getElementsByClassName("delete-task"))
+            button.addEventListener("click", (e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                console.log(e);
+            })
+        
+     
+    }
     btn.addEventListener('click', addToDoItem);
     list.addEventListener("click", listenToElementChanges);
     btnDone.addEventListener("click", filterByDone);
@@ -109,7 +139,7 @@ window.onload = function () {
     function addToDoItem(e) {
         e.preventDefault()
         if (input.value.length <= 3) {
-            alert('Value is too short! Enter value that has more than 3 characters')
+            alert('Zadanie musi mieć minimum 3 znaki')
         } else {
             addNewTask();
         }
@@ -184,4 +214,5 @@ window.onload = function () {
     })
 
     getTasks();
+
 }
