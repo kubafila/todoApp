@@ -37,7 +37,8 @@ ul {
 li {
     border-bottom: 1px solid white;
     padding: 0.5rem 0;
-	margin-top:5px;
+    margin-top:5px;
+    font-weight: lighter;
 }
 li:last-child{
 	border:none;
@@ -91,12 +92,14 @@ li:hover .action-button {
     text-decoration: line-through;
     font-size: 1.4rem;
 }
-.badge {
-    margin-right: 5px;
+li .badge {
+
     font-weight: bold;
     font-size: 1.3rem;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
+    color: white;
+   
 }
 button>* {
     /* //unikanie klinięcie elementu <i> w button - font awsome */
