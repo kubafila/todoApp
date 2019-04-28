@@ -4,6 +4,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 const cors = require('cors');
 const mongoose = require('mongoose');
 const tasks = require('./routes/tasks');
+const tagsRoutes = require('./routes/tagsRoutes');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
@@ -11,6 +12,7 @@ const app = express();
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+  //w terminalu: export todo_jwtPrivateKey=mySecureKey
   process.exit(1);
 }
 
@@ -21,9 +23,9 @@ mongoose.connect('mongodb://localhost/todo')
 app.use(cors());
 app.use(express.json());
 app.use('/api/tasks', tasks);
+app.use('/api/tags', tagsRoutes);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
