@@ -6,6 +6,7 @@ window.onload = function () {
     const btnAll = document.getElementById('btn-all')
     const btnTodo = document.getElementById('btn-todo')
     const btnDone = document.getElementById('btn-done')
+    const btnTags = document.getElementById('btn-show-tags');
     const list = document.getElementById("list");
   
     //"todo" albo "done" jeżeli chcemy filtorwać 
@@ -98,18 +99,73 @@ window.onload = function () {
     function addActionToButtons() {
         for (let button of document.getElementsByClassName("delete-task"))
             button.addEventListener("click", (e)=>{
-                e.preventDefault();
-                e.stopPropagation();
-                console.log(e);
+                deleteTask(e.target.parentNode.dataset.id);
+            })
+
+        for (let button of document.getElementsByClassName("check-task"))
+            button.addEventListener("click", (e)=>{
+                checkTask(e.target.parentNode.dataset.id,e.target.parentNode.innerText)
+                
+            })
+
+        for (let button of document.getElementsByClassName("undo-task"))
+            button.addEventListener("click", (e)=>{
+                undoTask(e.target.parentNode.dataset.id, e.target.parentNode.innerText)
             })
         
      
     }
+
+    function deleteTask(id){
+     
+        
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'delete',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }})
+        .then(res => res.json())
+        .then(getTasks);
+    }
+
+    function checkTask(id, name) {
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                isDone: true,
+            }),
+        })
+        .then()
+        .then(getTasks);
+    }
+    function undoTask(id, name) {
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                isDone: false,
+            }),
+        })
+        .then()
+        .then(getTasks);
+    }
+
+
     btn.addEventListener('click', addToDoItem);
-    list.addEventListener("click", listenToElementChanges);
     btnDone.addEventListener("click", filterByDone);
     btnTodo.addEventListener('click', filterNotDone)
     btnAll.addEventListener('click', displayAll)
+    btnTags.addEventListener("click",getTasks);
 
     function filterByDone() {
         btnAll.className = "btn btn-sm btn-dark";
@@ -155,54 +211,16 @@ window.onload = function () {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json()).then(task => {
-            if (list.style.borderTop === "") {
-                list.style.borderTop = "2px solid white";
-            }
-            const item = createItem(task._id, task.name, task.isDone);
-
-            list.insertAdjacentHTML('beforeend', item);
-            id++;
-            form.reset();
-            allTasks.push(task)
         })
+        .then()
+        .then(getTasks)
+        form.reset();
+        
+
 
     }
 
-    function listenToElementChanges(event) {
-        const element = event.target;
-        if (element.type === "checkbox") {
-            if (element.checked) {
-                console.log('if')
-                element.parentNode.style.textDecoration = "line-through"
-
-            } else {
-                console.log('else')
-                element.parentNode.style.textDecoration = "none"
-            }
-            fetch(`http://localhost:3000/api/tasks/${element.parentNode.id}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    name: element.parentNode.innerText,
-                    isDone: element.checked,
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => res.json()).then(res => allTasks = allTasks.map(el => el._id === res._id ? res : el))
-
-        }
-
-        if (element.type === "button") {
-            fetch(`http://localhost:3000/api/tasks/${element.parentNode.id}`, {
-                method: 'DELETE',
-            }).then(res => res.json()).then(res => {
-                const child = document.getElementById(res._id);
-                list.removeChild(child)
-            })
-        }
-
-    }
+   
 
     //DODANIE ZADANIA PO NACIŚNIĘCIU ENTERA
     input.addEventListener("keyup", (e) => {
