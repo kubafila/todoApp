@@ -74,3 +74,13 @@ li:hover .btn-danger{
   background-color:#222;
 }
 
+.dropdown-menu .dot {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: -10px;
+    height: 12px;
+    width: 12px;
+    border-radius: 100%;
+    line-height: inherit;
+    background-color: blueviolet;
+}

@@ -2,6 +2,7 @@ let editGroupVisibilityState = false;
 let tagsSidebarVisibilityState = true;
 let editTagMode = false;
 let newTagMode = false;
+const logData = true;
 
 const mainTaskList = document.getElementById("main-task-list");
 const tagsSidebar = document.getElementById("tag-panel");
@@ -25,7 +26,7 @@ const removeTagButton = document.getElementById("btn-remove-tag");
 const approveChangesButton = document.getElementById("btn-approve-tag-changes");
 
 
-//Czekam nad endpointy, chwilowo używam zadań zamiast tagów
+
 const allTagsEndpoint = "http://localhost:3000/api/tags";
 const allTasksEndpoint = "http://localhost:3000/api/tasks";
 const idTagEndpoint = "http://localhost:3000/api/tags/"
@@ -39,13 +40,10 @@ let taskID ="";
 //schowanie przycisków przed wyborem tagu
 editTagButton.hidden = true;
 removeTagButton.hidden = true;
-approveChangesButton.hidden=true;
 
 let tagSelected = false;
 let taskSelected = false;
-
-
-
+//uktyrwa panel tagów
 function changeTagsSidebarVisibility() {
 	tagsSidebarVisibilityState = !tagsSidebarVisibilityState;
 	if (tagsSidebarVisibilityState == true) {
@@ -67,41 +65,56 @@ function changeEditGroupVisibility() {
 	editGroup.hidden = editGroupVisibilityState;
 }
 
+function clearInput(){
+	tagName.value="";
+	tagName.placeholder="Podaj nazwę tagu";
+	tagColor.value = "#f6b73c";
+	
+	
+}
 function getData() {
 
 	dropdownTagsItems.innerText = "";
+	
 	fetch(allTagsEndpoint)
 		.then(res => res.json())
 		.then(res => {
+
+			if(logData)
+				console.log(arguments.callee.name, res)
+
 			if(res.length >0){
-
-
+				dropdownTagsItems.innerText = "";
 				for (let tagObject of res)
 					addToDropdown(tagObject.name, tagObject._id, tagObject.color)
 
 				selectDropdownItem();
-
-					
 			}
 			else{
 				editTagButton.hidden= true;
 				removeTagButton.hidden = true;
-				
+				dropdownTagsItems.innerText = "Brak tagów";
 			}
 		})
+		.catch(dropdownTagsItems.innerText = "Błąd przy łączeniu się z bazą tagów");
 
 }
 
 function addToDropdown(text, id,color) {
 	let tagItem = document.createElement("a");
-	tagItem.className = ("dropdown-item tag-item");
+	
+	//kółeczko w kolorze wybarnego tagu
+	let dotItem = document.createElement("div");
+	tagItem.className = "dropdown-item tag-item";
+	dotItem.className="dot";
+	tagItem.appendChild(dotItem);
+
+	let tagName = document.createTextNode(text);
 	tagItem.href = "#";
-	tagItem.text = text;
+	dotItem.style.backgroundColor = color;
 	tagItem.dataset.id = id;
-	tagItem.style.backgroundColor=color;
+	tagItem.appendChild(tagName);
 	dropdownTagsItems.appendChild(tagItem);
-
-
 }
 
 function selectDropdownItem(){
@@ -111,7 +124,7 @@ function selectDropdownItem(){
 			tagID = e.target.dataset.id;
 			editTagButton.hidden = false;
 			removeTagButton.hidden = false;
-		
+			tagSelected = true;
 		} )
 }
 function getTaskData() {
@@ -120,10 +133,12 @@ function getTaskData() {
 	fetch(allTasksEndpoint)
 		.then(res => res.json())
 		.then(res => {
+				dropdownTasksItems.innerText = "";
+
+			if (logData)
+				console.log(res)
 
 			if (res.length > 0) {
-
-
 				for (let taskObject of res)
 					addToTasksDropdown(taskObject.name, taskObject._id)
 
@@ -132,10 +147,10 @@ function getTaskData() {
 
 			} else {
 				approveChangesButton.hidden = true;
+				dropdownTasksItems.innerText = "Brak zadań";
 			}
-
-		
 		})
+		.catch(dropdownTasksItems.innerText = "Błąd przy łączeniu się z bazą zadań")
 
 }
 
@@ -154,7 +169,7 @@ function selectDropdownTaskItem(){
 		item.addEventListener("click", (e) =>{
 			dropdownTasksButton.innerText = e.target.text
 			taskID = e.target.dataset.id;
-			approveChangesButton.hidden = false;
+			taskSelected=true;
 		} )
 }
 
@@ -171,6 +186,7 @@ function addTag() {
 			color: tagColor.value
 		})
 	})
+	.then(res =>res.json()).then(res => {if(logData) console.log(arguments.callee.name,res)});
 	
 }
 
@@ -186,6 +202,7 @@ function editTag() {
 			color: tagColor.value
 		})
 	})
+	.then(res =>res.json()).then(res => {if(logData) console.log(arguments.callee.name,res)});
 }
 
 function removeTag() {
@@ -197,6 +214,7 @@ function removeTag() {
 			'Content-Type': 'application/json'
 		}
 	})
+	.then(res =>res.json()).then(res => {if(logData) console.log(arguments.callee.name,res)});
 
 }
 
@@ -209,15 +227,13 @@ fetch(`http://localhost:3000/api/tasks/${taskID}/tags/${tagID}`, {
 		'Content-Type': 'application/json'
 	}
 })
-.then(x => x.json())
-.then(x => console.log(x));
+	.then(res =>res.json()).then(res => {if(logData) console.log(arguments.callee.name,res)});
 }
 
-changeEditGroupVisibility();
-changeTagsSidebarVisibility();
 
 showTagPanelButton.addEventListener("click", changeTagsSidebarVisibility);
 dropdownTagsButton.addEventListener("click", () =>{
+	editGroup.hidden="true";
 	getData();
 
 })
@@ -229,40 +245,39 @@ addTagButton.addEventListener("click", () => {
 	newTagMode = true;
 	editTagMode = false;
 	dropdownTasks.hidden = true;
-	approveChangesButton.hidden=false;
-	changeEditGroupVisibility()
-
+	editGroup.hidden=false;
+	clearInput();
 });
 
 editTagButton.addEventListener("click", () => {
 	editTagMode = true;
 	newTagMode = false;
 	dropdownTasks.hidden = false;
-	changeEditGroupVisibility()
+	editGroup.hidden=false;
+	tagName.value=dropdownTagsButton.innerText;
 });
 
 
 approveChangesButton.addEventListener("click", () => {
-	changeEditGroupVisibility();
-	console.log(tagID,taskID);
+
 	if(tagName.value){
 		if (editTagMode) {
 			editTag();
-
+			if(taskSelected)
 			assignTagToTask();
-			console.log(`Edytowano tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
 		}
-		if (newTagMode) {
+		if (newTagMode) 
 			addTag();
-			console.log(`Dodano nowy tag o nazwie: ${tagName.value} i kolorze: ${tagColor.value}`);
-			approveChangesButton.hidden = true;
-		}
+		
+		
 	}
-		
-		
-
+	clearInput();
 	newTagMode = false;
 	editTagMode = false;
+	taskSelected=false;
+	editGroup.hidden=true;
+	editTagButton.hidden=true;
+	removeTagButton.hidden=true;
 	dropdownTagsButton.innerText = "Wybierz tag";
 	dropdownTasksButton.innerText = "Do jakiego zadania przypisać ?"
 })
@@ -274,3 +289,8 @@ removeTagButton.addEventListener("click", () => {
 	removeTagButton.hidden = true;
 	dropdownTagsButton.innerText = "Wybierz tag";
 });
+
+
+
+changeEditGroupVisibility();
+changeTagsSidebarVisibility();
