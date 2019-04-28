@@ -46,21 +46,32 @@
      
 
         <div class="tag-list ">
-        
+
           <div class="dropdown" id="dropdown-tags">
             <button class="btn btn-sm  btn-outline-light dropdown-toggle" type="button" id="dropdown-button-tags" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Wybierz tag
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-tags-items">
             </div>
+        
           </div>
 
+          <button class="btn btn-sm btn-outline-light" id="btn-edit-tag">
+          <i class="fas fa-pen"></i> Edytuj</button>
+          
+          <br>
+          <button class="btn btn-sm btn-outline-danger" id="btn-remove-tag">
+          <i class="far fa-trash-alt"></i>  Usuń</button>
+        
         </div>
  
-        <button class="btn btn-sm btn-outline-light" id="btn-edit-tag"><i class="fas fa-pen"></i> Edytuj</button>
-        <button class="btn btn-sm btn-outline-danger" id="btn-remove-tag"><i class="far fa-trash-alt"></i> Usuń</button>
+        
         <br>
         <br>
+
+  
+
+
         <button class="btn btn-sm btn-outline-success" id="add-tag"><i class="fas fa-plus"></i> Dodaj nowy</button>
         <br>
         <br>
@@ -74,7 +85,7 @@
                 </label>
 
                 <div class="dropdown" id="dropdown-tasks">
-                  <button class="btn btn-sm  btn-outline-light dropdown-toggle" type="button" id="dropdown-button-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-sm btn-block btn-outline-light dropdown-toggle" type="button" id="dropdown-button-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Do jakiego zadania przypisać ?
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-tasks-items">
