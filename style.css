@@ -59,13 +59,14 @@ input[type=checkbox] {
     text-decoration: line-through;
 }
 
-li .btn-danger{
+li .action-button {
 	transition : opacity 0.3s ease-in-out;
 	opacity:0;
-	margin 5px;
+    margin-right: 20px;
+    float: right;
 }
 
-li:hover .btn-danger{
+li:hover .action-button {
 	opacity:1;
 }
 
@@ -84,4 +85,21 @@ li:hover .btn-danger{
     line-height: inherit;
     background-color: blueviolet;
    
+}
+.done{
+    color: darkslategrey;
+    text-decoration: line-through;
+    font-size: 1.4rem;
+}
+.badge {
+    margin-right: 5px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+button>* {
+    /* //unikanie klinięcie elementu <i> w button - font awsome */
+    /* https://css-tricks.com/slightly-careful-sub-elements-clickable-things/ */
+    pointer-events: none;
 }

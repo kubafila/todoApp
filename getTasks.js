@@ -1,84 +1,201 @@
 window.onload = function () {
     const form = document.getElementById("form");
     const input = document.getElementById("input");
+    
     const btn = document.getElementById("btn");
     const btnAll = document.getElementById('btn-all')
     const btnTodo = document.getElementById('btn-todo')
     const btnDone = document.getElementById('btn-done')
+    const btnTags = document.getElementById('btn-show-tags');
     const list = document.getElementById("list");
-    let id = 1;
+  
+    //"todo" albo "done" jeżeli chcemy filtorwać 
+    let selectTasks ="all";
 
-    let allTasks = []
+    function getTasks()
+    {
+        //wyczysczenie listy zadań
+        list.innerHTML="";
+        fetch("http://localhost:3000/api/tasks")
+        .then(tasks => tasks.json())
+        .then(tasks => {
+        
+            switch (selectTasks) {
+                case "todo":
+                     tasks = tasks.filter(task => task.isDone === false)
+                    break;
+                case "done":
+                    tasks = tasks.filter(task => task.isDone)
+                    break;
+            }
 
-    fetch("http://localhost:3000/api/tasks").then(tasks => tasks.json()).then(tasks => {
-        tasks.forEach(task => {
-            allTasks.push(task);
-            const item = createItem(task._id, task.name, task.isDone);
-            list.insertAdjacentHTML('beforeend', item);
+            tasks.forEach(createTaskElement);
+            addActionToButtons();
+        });
+   }
 
+    function createTaskElement(task){
+
+        const liElement=document.createElement("li");
+        console.log(task);
+        
+        //ask for tags
+        fetch(`http://localhost:3000/api/tasks/${task._id}/tags`)
+        .then(res =>res.json())
+        .then(res => {
+            //jeżeli są tagi
+            if(res.length >0){
+               for(let i = 0; i <= res.length; i++){
+                   if(res[i])
+                    liElement.appendChild(createTag(res[i]));
+               }
+            }
+        });
+        
+        liElement.dataset.id=task._id;
+        liElement.innerText=task.name;
+        
+        
+
+        let deleteButton = document.createElement("button");
+        deleteButton.classList="btn btn-outline-danger action-button delete-task";
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+        
+        let checkButton = document.createElement("button");
+        checkButton.classList = "btn btn-outline-success action-button check-task";
+        checkButton.innerHTML = `<i class="fas fa-check"></i>`;
+
+        let undoButton = document.createElement("button");
+        undoButton.classList = "btn btn-outline-primary action-button undo-task";
+        undoButton.innerHTML = `<i class="fas fa-undo-alt"></i>`;
+
+        liElement.appendChild(deleteButton);
+        if(task.isDone === false){
+            liElement.appendChild(checkButton);
+            
+        }
+        
+        if(task.isDone){
+            liElement.appendChild(undoButton);
+            liElement.className="done";
+        }
+        list.appendChild(liElement);
+
+    }
+
+    function createTag(tag)
+    {
+        if(tag)
+        {
+            const tagElement = document.createElement("span");
+            tagElement.innerHTML = tag.name;
+            tagElement.style.backgroundColor = tag.color;
+            tagElement.className = "badge badge-pill "
+            return tagElement;
+        }
+       
+    }
+  
+    function addActionToButtons() {
+        for (let button of document.getElementsByClassName("delete-task"))
+            button.addEventListener("click", (e)=>{
+                deleteTask(e.target.parentNode.dataset.id);
+            })
+
+        for (let button of document.getElementsByClassName("check-task"))
+            button.addEventListener("click", (e)=>{
+                checkTask(e.target.parentNode.dataset.id,e.target.parentNode.innerText)
+                
+            })
+
+        for (let button of document.getElementsByClassName("undo-task"))
+            button.addEventListener("click", (e)=>{
+                undoTask(e.target.parentNode.dataset.id, e.target.parentNode.innerText)
+            })
+        
+     
+    }
+
+    function deleteTask(id){
+     
+        
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'delete',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }})
+        .then(res => res.json())
+        .then(getTasks);
+    }
+
+    function checkTask(id, name) {
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                isDone: true,
+            }),
         })
-    })
+        .then()
+        .then(getTasks);
+    }
+    function undoTask(id, name) {
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                isDone: false,
+            }),
+        })
+        .then()
+        .then(getTasks);
+    }
 
 
     btn.addEventListener('click', addToDoItem);
-
-    list.addEventListener("click", listenToElementChanges);
     btnDone.addEventListener("click", filterByDone);
     btnTodo.addEventListener('click', filterNotDone)
     btnAll.addEventListener('click', displayAll)
+    btnTags.addEventListener("click",getTasks);
 
-    function filterByDone(e) {
+    function filterByDone() {
         btnAll.className = "btn btn-sm btn-dark";
         btnTodo.className = "btn btn-sm btn-dark";
         btnDone.className = "btn btn-sm btn-primary active";
-        
-        list.innerHTML = '';
-
-        const tasks = allTasks.filter(el => el.isDone);
-        tasks.forEach(task => {
-            const item = createItem(task._id, task.name, task.isDone);
-            list.insertAdjacentHTML('beforeend', item);
-
-
-        });
+        selectTasks = "done";
+        getTasks();
     }
-
-    const createItem = (id, name, isDone) => {
-        return `<li class="${isDone?'li-done':'' }" id="${id}">${name}
-        <input id="box-${id}" class="checkbox" ${isDone ? 'checked ' : ''} type="checkbox"> <input  type="button" class='btn btn-danger' value="X"></input> </li>`;
-    }
-
-    function filterNotDone(e) {
+    function filterNotDone() {
         btnAll.className = "btn btn-sm btn-dark";
         btnTodo.className = "btn btn-sm btn-primary active";
         btnDone.className = "btn btn-sm btn-dark ";
-        list.innerHTML = '';
-
-        const tasks = allTasks.filter(el => el.isDone === false);
-        tasks.forEach(task => {
-            const item = createItem(task._id, task.name, task.isDone);
-            list.insertAdjacentHTML('beforeend', item);
-
-        });
+        selectTasks = "todo";
+        getTasks();
     }
+
+
 
     function displayAll(e) {
         btnAll.className = "btn btn-sm btn-primary active";
         btnTodo.className = "btn btn-sm btn-dark";
         btnDone.className = "btn btn-sm btn-dark ";
-        list.innerHTML = '';
-        allTasks.forEach(task => {
-            const item = createItem(task._id, task.name, task.isDone);
-
-            list.insertAdjacentHTML('beforeend', item);
-
-        });
+        selectTasks = "all";
+        getTasks();
     }
 
     function addToDoItem(e) {
         e.preventDefault()
         if (input.value.length <= 3) {
-            alert('Value is too short! Enter value that has more than 3 characters')
+            alert('Zadanie musi mieć minimum 3 znaki')
         } else {
             addNewTask();
         }
@@ -94,54 +211,16 @@ window.onload = function () {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json()).then(task => {
-            if (list.style.borderTop === "") {
-                list.style.borderTop = "2px solid white";
-            }
-            const item = createItem(task._id, task.name, task.isDone);
-
-            list.insertAdjacentHTML('beforeend', item);
-            id++;
-            form.reset();
-            allTasks.push(task)
         })
+        .then()
+        .then(getTasks)
+        form.reset();
+        
+
 
     }
 
-    function listenToElementChanges(event) {
-        const element = event.target;
-        if (element.type === "checkbox") {
-            if (element.checked) {
-                console.log('if')
-                element.parentNode.style.textDecoration = "line-through"
-
-            } else {
-                console.log('else')
-                element.parentNode.style.textDecoration = "none"
-            }
-            fetch(`http://localhost:3000/api/tasks/${element.parentNode.id}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    name: element.parentNode.innerText,
-                    isDone: element.checked,
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => res.json()).then(res => allTasks = allTasks.map(el => el._id === res._id ? res : el))
-
-        }
-
-        if (element.type === "button") {
-            fetch(`http://localhost:3000/api/tasks/${element.parentNode.id}`, {
-                method: 'DELETE',
-            }).then(res => res.json()).then(res => {
-                const child = document.getElementById(res._id);
-                list.removeChild(child)
-            })
-        }
-
-    }
+   
 
     //DODANIE ZADANIA PO NACIŚNIĘCIU ENTERA
     input.addEventListener("keyup", (e) => {
@@ -151,4 +230,7 @@ window.onload = function () {
          }
             
     })
+
+    getTasks();
+
 }

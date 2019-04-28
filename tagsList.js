@@ -112,6 +112,7 @@ function addToDropdown(text, id,color) {
 	let tagName = document.createTextNode(text);
 	tagItem.href = "#";
 	dotItem.style.backgroundColor = color;
+	tagItem.dataset.color=color;
 	tagItem.dataset.id = id;
 	tagItem.appendChild(tagName);
 	dropdownTagsItems.appendChild(tagItem);
@@ -122,6 +123,7 @@ function selectDropdownItem(){
 		item.addEventListener("click", (e) =>{
 			dropdownTagsButton.innerText = e.target.text
 			tagID = e.target.dataset.id;
+			tagColor.value =e.target.dataset.color;
 			editTagButton.hidden = false;
 			removeTagButton.hidden = false;
 			tagSelected = true;
