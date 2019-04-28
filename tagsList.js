@@ -35,6 +35,7 @@ const assignTagToTaskEndpoint = "http://localhost:3000/api/tasks";
 //dostaje wartośc w selectDropdownItem()
 let tagID ="";
 let taskID ="";
+let lastColor="#fff"
 
 
 //schowanie przycisków przed wyborem tagu
@@ -112,6 +113,7 @@ function addToDropdown(text, id,color) {
 	let tagName = document.createTextNode(text);
 	tagItem.href = "#";
 	dotItem.style.backgroundColor = color;
+	lastColor = color;
 	tagItem.dataset.id = id;
 	tagItem.appendChild(tagName);
 	dropdownTagsItems.appendChild(tagItem);

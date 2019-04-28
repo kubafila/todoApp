@@ -34,7 +34,6 @@ window.onload = function () {
 
     function createTaskElement(task){
 
-        
         const liElement=document.createElement("li");
         console.log(task);
         
@@ -51,6 +50,15 @@ window.onload = function () {
         
         liElement.dataset.id=task._id;
         liElement.innerText=task.name;
+        
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+
+        let deleteButton = document.createElement("button");
+        deleteButton.classList="btn btn-outline-danger ";
+        deleteButton.innerText="x";
+        liElement.appendChild(deleteButton);
+        liElement.appendChild(checkbox);
         if(task.isDone)
             liElement.className="done";
         list.appendChild(liElement);

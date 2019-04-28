@@ -59,13 +59,13 @@ input[type=checkbox] {
     text-decoration: line-through;
 }
 
-li .btn-danger{
+li .btn-outline-danger{
 	transition : opacity 0.3s ease-in-out;
 	opacity:0;
 	margin 5px;
 }
 
-li:hover .btn-danger{
+li:hover .btn-outline-danger {
 	opacity:1;
 }
 
@@ -90,6 +90,10 @@ li:hover .btn-danger{
     text-decoration: line-through;
     font-size: 1.4rem;
 }
-.label{
+.badge {
     margin-right: 5px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
