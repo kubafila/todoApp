@@ -85,3 +85,11 @@ li:hover .btn-danger{
     background-color: blueviolet;
    
 }
+.done{
+    color: darkslategrey;
+    text-decoration: line-through;
+    font-size: 1.4rem;
+}
+.label{
+    margin-right: 5px;
+}
