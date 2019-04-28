@@ -80,28 +80,32 @@ window.onload = function () {
         if (input.value.length <= 3) {
             alert('Value is too short! Enter value that has more than 3 characters')
         } else {
-            fetch('http://localhost:3000/api/tasks', {
-                method: 'POST',
-                body: JSON.stringify({
-                    name: input.value,
-                    isDone: false,
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => res.json()).then(task => {
-                if (list.style.borderTop === "") {
-                    list.style.borderTop = "2px solid white";
-                }
-                const item = createItem(task._id, task.name, task.isDone);
-
-                list.insertAdjacentHTML('beforeend', item);
-                id++;
-                form.reset();
-                allTasks.push(task)
-            })
-
+            addNewTask();
         }
+    }
+
+    function addNewTask(){
+        fetch('http://localhost:3000/api/tasks', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: input.value,
+                isDone: false,
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(task => {
+            if (list.style.borderTop === "") {
+                list.style.borderTop = "2px solid white";
+            }
+            const item = createItem(task._id, task.name, task.isDone);
+
+            list.insertAdjacentHTML('beforeend', item);
+            id++;
+            form.reset();
+            allTasks.push(task)
+        })
+
     }
 
     function listenToElementChanges(event) {
@@ -138,4 +142,13 @@ window.onload = function () {
         }
 
     }
+
+    //DODANIE ZADANIA PO NACIŚNIĘCIU ENTERA
+    input.addEventListener("keyup", (e) => {
+        e.preventDefault();
+         if (event.keyCode === 13) {
+             addNewTask();
+         }
+            
+    })
 }

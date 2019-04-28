@@ -146,7 +146,7 @@ function getTaskData() {
 
 
 			} else {
-				approveChangesButton.hidden = true;
+				
 				dropdownTasksItems.innerText = "Brak zadań";
 			}
 		})
@@ -287,6 +287,7 @@ removeTagButton.addEventListener("click", () => {
 	getData();
 	editTagButton.hidden = true;
 	removeTagButton.hidden = true;
+	editGroup.hidden=true;
 	dropdownTagsButton.innerText = "Wybierz tag";
 });
 
