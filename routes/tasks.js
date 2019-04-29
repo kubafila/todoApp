@@ -43,9 +43,11 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-    const {error} = validate(req.body);
+    const {
+        error
+    } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    const task;
+    let task;
     jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
     task = await Task.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
@@ -58,7 +60,9 @@ router.put('/:id', async (req, res) => {
     if (!task) return res.status(404).send('The task with the given ID was not found.');
 
     res.send(task);
+    });
 });
+
 
 router.delete('/:id', async (req, res) => {
     const task = await Task.findByIdAndRemove(req.params.id);
