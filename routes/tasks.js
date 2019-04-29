@@ -81,16 +81,17 @@ router.delete('/:id', async (req, res) => {
             }
         ).sort('name');
         res.send(task);
+        
+        if (!task) return res.status(404).send('The task with the given ID was not found.');
+        else while(await taskToTag.findOneAndDelete(
+            {
+                task: mongoose.Types.ObjectId(req.params.id)
+            }
+        ));
+    
+        res.send(task);
     });
 
-    if (!task) return res.status(404).send('The task with the given ID was not found.');
-    else while(await taskToTag.findOneAndDelete(
-        {
-            task: mongoose.Types.ObjectId(req.params.id)
-        }
-    ));
-
-    res.send(task);
 });
 
 // 
