@@ -16,16 +16,14 @@ const Tag = mongoose.model('Tag', mongoose.Schema({
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'User'
     }
 }));
 
 function validateTag(tag) {
     const schema = {
         name: Joi.string().min(1).max(255).required(),
-        color: Joi.string().min(1).max(35).required(),
-        userId: Joi.required()
+        color: Joi.string().min(1).max(35).required()
     };
 
     return Joi.validate(tag, schema);

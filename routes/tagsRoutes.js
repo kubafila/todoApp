@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
     let tags;
     jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
         tags = await Tag.find({userId: decoded._id}).sort('name');
+        res.send(tags);
     });
-    res.send(tags);
 })
 
 router.get('/:id', async (req, res) => {
@@ -22,9 +22,9 @@ router.get('/:id', async (req, res) => {
     
     jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
         tag = await Tag.findOne({_id: mongoose.Types.ObjectId(req.params.id), userId: decoded._id}).sort('name');
+        if (!tag) return res.status(404).send('The tag with the given ID was not found.');
+        else res.send(tag);
     });
-    if (!tag) return res.status(404).send('The tag with the given ID was not found.');
-    else res.send(tag);
 })
 
 router.post('/', async (req, res) => {
@@ -36,16 +36,16 @@ router.post('/', async (req, res) => {
     if(isExisting) return res.status(400).send('This tag already exists');
     
     let tag;
-    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), function(err, decoded) {
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
         tag = new Tag({
             name: req.body.name,
             color: req.body.color,
             userId: mongoose.Types.ObjectId(decoded._id)
         });
+        tag = await tag.save();
+    
+        res.send(tag);
     });    
-    tag = await tag.save();
-
-    res.send(tag);
 });
 
 router.put('/:id', async (req, res) => {
@@ -80,16 +80,15 @@ router.delete('/:id', async (req, res) => {
                 userId: mongoose.Types.ObjectId(decoded._id)
             }
         );
+        if (!tag) return res.status(404).send('The tag with the given ID was not found.');
+        else while(await taskToTag.findOneAndDelete(
+            {
+                tag: mongoose.Types.ObjectId(req.params.id)
+            }
+        ));
+        
+        res.send(tag);
     })
-
-    if (!tag) return res.status(404).send('The tag with the given ID was not found.');
-    else while(await taskToTag.findOneAndDelete(
-        {
-            tag: mongoose.Types.ObjectId(req.params.id)
-        }
-    ));
-
-    res.send(tag);
 });
 
 

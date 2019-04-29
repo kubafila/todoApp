@@ -31,17 +31,18 @@ router.post('/', async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     let task;
-    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), function(err, decoded) {
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
         task = new Task({
             name: req.body.name,
             isDone: req.body.isDone,
             userId: decoded._id
         });
+
+        task = await task.save();
+    
+        res.send(task);
     });
     
-    task = await task.save();
-
-    res.send(task);
 });
 
 router.put('/:id', async (req, res) => {
@@ -143,7 +144,7 @@ router.post('/:taskId/tags/:tagId', async (req, res) => {
         let relation = new taskToTag({
             task: mongoose.Types.ObjectId(req.params.taskId),
             tag: mongoose.Types.ObjectId(req.params.tagId),
-            userId: mongoose.Types.ObjectId(decoded._id)
+            userId: decoded._id
         });
         relation = await relation.save();
     
