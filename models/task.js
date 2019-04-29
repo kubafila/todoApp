@@ -21,7 +21,7 @@ const Task = mongoose.model('Task', new mongoose.Schema({
 function validateTask(task) {
     const schema = {
         name: Joi.string().min(4).max(255).required(),
-        isDone: Joi.boolean()
+        isDone: Joi.boolean(),
     };
 
     return Joi.validate(task, schema);

@@ -13,13 +13,17 @@ const Tag = mongoose.model('Tag', mongoose.Schema({
         required: true,
         minlength: 1,
         maxlength: 35
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }));
 
 function validateTag(tag) {
     const schema = {
         name: Joi.string().min(1).max(255).required(),
-        color: Joi.string().min(1).max(35).required(),
+        color: Joi.string().min(1).max(35).required()
     };
 
     return Joi.validate(tag, schema);
