@@ -3,7 +3,10 @@ const logoutButton = document.getElementById("logout-button")
 
 function logout() {
 	localStorage.removeItem("userKey");
+
 	alert("Wylogowno! przejdź na stornę logowania")
+
+
 	////TUTAJ PODAĆ ADRES STRONY LOGOWANIA
 	//window.location.href = "http://127.0.0.1:5500/login-register/";
 }

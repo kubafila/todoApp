@@ -212,8 +212,13 @@ window.onload = function () {
 
     function addToDoItem(e) {
         e.preventDefault()
-        if (input.value.length <= 3) {
-            alert('Zadanie musi mieć minimum 3 znaki')
+        if (input.value.length <= 4) {
+            	swal({
+            	    title: "Za mało literek!",
+            	    text: "Zadanie musi posiadać minmum 4 znaki",
+            	    icon: "error",
+            	    button: "Już poprawiam",
+            	});
         } else {
             addNewTask();
         }
