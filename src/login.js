@@ -45,7 +45,7 @@ signInForm.addEventListener('submit', e => {
         .then(res =>{
             //wsytko dobrze
             if (res.status == 200){
-                   window.location.href = "http://localhost:3000/app"
+                   
                 
             }
             else{
@@ -67,9 +67,7 @@ signInForm.addEventListener('submit', e => {
             }
             else{
             localStorage.setItem("userKey", res);
-            console.log(res)
-            //TUTAJ PODAĆ ADRES STRONY GŁÓWNEJ
-            //window.location.href = "http://127.0.0.1:5500/index.html";
+             window.location.href = "http://localhost:3000/app"
             }
 
         })

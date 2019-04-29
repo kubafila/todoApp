@@ -87,8 +87,7 @@ function getData() {
 		.then(res => res.json())
 		.then(res => {
 
-			if(logData)
-				console.log(arguments.callee.name, res)
+	
 
 			if(res.length >0){
 				dropdownTagsItems.innerText = "";
@@ -151,8 +150,7 @@ function getTaskData() {
 		.then(res => {
 				dropdownTasksItems.innerText = "";
 
-			if (logData)
-				console.log(res)
+	
 
 			if (res.length > 0) {
 				for (let taskObject of res)

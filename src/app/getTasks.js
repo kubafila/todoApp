@@ -45,7 +45,7 @@ window.onload = function () {
     function createTaskElement(task){
 
         const liElement=document.createElement("li");
-        console.log(task);
+        
         
         //ask for tags
         fetch(`http://localhost:3000/api/tasks/${task._id}/tags`, {

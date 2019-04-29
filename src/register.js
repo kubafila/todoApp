@@ -53,7 +53,7 @@ signUpForm.addEventListener('submit', e => {
         .then(ret => {
             
             submit.disabled = false;
-            console.log(ret);
+         
             if (ret.errors) {
                 ret.errors.map(function (el) {
                     return '[name="' + el + '"]'
@@ -89,7 +89,7 @@ signUpForm.addEventListener('submit', e => {
         })
         .catch(x=> {
             submit.disabled = false;
-            console.log(x)
+           
         });
         
     }
