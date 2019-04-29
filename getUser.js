@@ -4,7 +4,7 @@ const logoutButton = document.getElementById("logout-button")
 function logout() {
 	localStorage.removeItem("userKey");
 
-	alert("Wylogowno! przejdź na stornę logowania")
+	alert("Wylogowano! przejdź na stronę logowania")
 
 
 	////TUTAJ PODAĆ ADRES STRONY LOGOWANIA
