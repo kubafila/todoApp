@@ -215,7 +215,7 @@ window.onload = function () {
         if (input.value.length <= 4) {
             	swal({
             	    title: "Za mało literek!",
-            	    text: "Zadanie musi posiadać minmum 4 znaki",
+            	    text: "Zadanie musi posiadać minimum 4 znaki",
             	    icon: "error",
             	    button: "Już poprawiam",
             	});
