@@ -45,7 +45,7 @@ signInForm.addEventListener('submit', e => {
         .then(res =>{
             //wsytko dobrze
             if (res.status == 200){
-                    alert("Zalogowano! przejdź na stronę główną")
+                   window.location.href = "http://localhost:3000/app"
                 
             }
             else{

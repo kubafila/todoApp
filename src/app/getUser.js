@@ -4,11 +4,11 @@ const logoutButton = document.getElementById("logout-button")
 function logout() {
 	localStorage.removeItem("userKey");
 
-	alert("Wylogowano! przejdź na stronę logowania")
 
 
-	////TUTAJ PODAĆ ADRES STRONY LOGOWANIA
-	//window.location.href = "http://127.0.0.1:5500/login-register/";
+
+
+	window.location.href = "http://localhost:3000/";
 }
 
 if(localStorage.getItem("userKey")){

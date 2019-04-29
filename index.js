@@ -8,6 +8,8 @@ const tagsRoutes = require('./routes/tagsRoutes');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
+const path = require('path');
+const router = express.Router();
 const app = express();
 
 if (!config.get('jwtPrivateKey')) {
@@ -26,6 +28,9 @@ app.use('/api/tasks', tasks);
 app.use('/api/tags', tagsRoutes);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+
+app.use(express.static("src"));
+app.use('/app', express.static('/src/app'))
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
