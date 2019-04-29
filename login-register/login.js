@@ -1,5 +1,7 @@
 const signInForm = document.querySelector('#sign-in-form');
 const signInInputs = signInForm.querySelectorAll('input[required]');
+const emailSignIn = document.getElementById("field-email-sign-in");
+const passwordSignIn = document.getElementById("field-password-sign-in");
 
 //wyłączamy domyślną walidację
 signInForm.setAttribute('novalidate', true);
@@ -34,40 +36,38 @@ signInForm.addEventListener('submit', e => {
         const url = signInForm.getAttribute('action');
         const method = signInForm.getAttribute('method');
 
-        fetch(url, {
-            method: method.toUpperCase(),
-            body: dataToSend,
+        console.log(url);
+        console.log(method);
+        console.log("email ", emailSignIn.value)
+        console.log("Hasło: ",passwordSignIn.value)
+        console.log(
+        JSON.stringify({
+            email: emailSignIn.value,
+            password: passwordSignIn.value
         })
-        .then(ret => {
-            submit.disabled = false;
+        )
+        
 
-            if (ret.errors) {
-                ret.errors.map(function(el) {
-                    return '[name="'+el+'"]'
-                });
-
-                const badFields = signInForm.querySelectorAll(ret.errors.join(','));
-                checkFieldsErrors(badFields);
-            } else {
-                if (ret.status === 200) {
-                    // wypelnic adres
-		    window.location.href = "http://localhost:3000/api/tasks/";
-                }
-                if (ret.status === 400) {
-                    //jeżeli istnieje komunikat o błędzie wysyłki
-                    //np. generowany przy poprzednim wysyłaniu formularza
-                    //usuwamy go, by nie duplikować tych komunikatów
-                    if (document.querySelector('.send-error')) {
-                        document.querySelector('.send-error').remove();
-                    }
-                    const div = document.createElement('div');
-                    div.classList.add('send-error');
-                    div.innerText = 'Logowanie się nie powiodło';
-                    submit.appendChild(div);
-                }
-            }
-        }).catch(_ => {
-            submit.disabled = false;
-        });
+        fetch("http://localhost:3000/api/auth", {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: emailSignIn.value,
+                password: passwordSignIn.value
+            })
+        })
+        
+        .then(x => x.text())
+        .then(x => console.log(x))
     }
 });
+
+
+/*
+
+
+
+*/

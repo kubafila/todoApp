@@ -1,6 +1,8 @@
 const signUpForm = document.querySelector('#sign-up-form');
 const signUpInputs = signUpForm.querySelectorAll('input[required]');
-
+const nameSignUp = document.getElementById("field-name-sign-up");
+const emailSignUp = document.getElementById("field-email-sign-up");
+const passwordSignUp = document.getElementById("field-password-sign-up");
 //wyłączamy domyślną walidację
 signUpForm.setAttribute('novalidate', true);
 
@@ -33,23 +35,34 @@ signUpForm.addEventListener('submit', e => {
 
         const url = signUpForm.getAttribute('action');
         const method = signUpForm.getAttribute('method');
+        
+
 
         fetch(url, {
             method: method.toUpperCase(),
-            body: dataToSend
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: nameSignUp.value,
+                email: emailSignUp.value,
+                password: passwordSignUp.value
+            })
         })
         .then(ret => {
             submit.disabled = false;
 
             if (ret.errors) {
-                ret.errors.map(function(el) {
-                    return '[name="'+el+'"]'
+                ret.errors.map(function (el) {
+                    return '[name="' + el + '"]'
                 });
 
                 const badFields = signUpForm.querySelectorAll(ret.errors.join(','));
                 checkFieldsErrors(badFields);
             } else {
                 if (ret.status === 200) {
+                    console.log("Utworzono konto pomyślnie!")
                     document.querySelector('.sign-up-container').parentElement.classList.remove("right-panel-active");
                 }
                 if (ret.status === 400) {
@@ -65,8 +78,20 @@ signUpForm.addEventListener('submit', e => {
                     submit.appendChild(div);
                 }
             }
-        }).catch(_ => {
+        })
+        .catch(_ => {
             submit.disabled = false;
         });
+        
     }
 });
+
+
+/*
+
+
+
+
+
+
+*/
