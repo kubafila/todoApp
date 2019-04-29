@@ -18,10 +18,12 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const task = await Task.findById(req.params.id);
-
+    
+    let task;
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+        task = await Task.findOne({_id: mongoose.Types.ObjectId(req.params.id), userId: decoded._id}).sort('name');
+    });
     if (!task) return res.status(404).send('The task with the given ID was not found.');
-
     res.send(task);
 });
 
@@ -49,26 +51,43 @@ router.put('/:id', async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
     let task;
     jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
-    task = await Task.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-        isDone: req.body.isDone,
-        userId: decoded._id
-    }, {
-        new: true
-    });
+        task = await Task.findOneAndUpdate({
+            _id: mongoose.Types.ObjectId(req.params.id),
+            userId: mongoose.Types.ObjectId(decoded._id)
+        }, {
+            name: req.body.name,
+            isDone: req.body.isDone,
+            userId: decoded._id
+        }, {
+            new: true
+        });
 
-    if (!task) return res.status(404).send('The task with the given ID was not found.');
+        if (!task) return res.status(404).send('The task with the given ID was not found.');
 
-    res.send(task);
+        res.send(task);
     });
 });
 
 
 router.delete('/:id', async (req, res) => {
-    const task = await Task.findByIdAndRemove(req.params.id);
+    let task;
+    
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+        task = await Task.findOneAndDelete(
+            {
+                _id: mongoose.Types.ObjectId(req.params.id),
+                 userId: decoded._id
+            }
+        ).sort('name');
+        res.send(tasks);
+    });
 
     if (!task) return res.status(404).send('The task with the given ID was not found.');
-    else while(await taskToTag.findOneAndDelete({task: mongoose.Types.ObjectId(req.params.id)}));
+    else while(await taskToTag.findOneAndDelete(
+        {
+            task: mongoose.Types.ObjectId(req.params.id)
+        }
+    ));
 
     res.send(task);
 });
@@ -78,26 +97,35 @@ router.delete('/:id', async (req, res) => {
 // /api/tasks 
 
 router.get('/:id/tags', async (req, res) => {
-    taskToTag.find({'task': mongoose.Types.ObjectId(req.params.id)})
-        .populate('tag')
-        .exec()
-        .then( docs => {
-            const tags = docs.map(doc => {
-                return doc.tag;
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+        taskToTag.find(
+            {
+                    task: mongoose.Types.ObjectId(req.params.id),
+                    userId: mongoose.Types.ObjectId(decoded._id)
             })
-            res.send(tags);
+            .populate('tag')
+            .exec()
+            .then( docs => {
+                const tags = docs.map(doc => {
+                    return doc.tag;
+                })
+                res.send(tags);
+        })
     })
 });
 
 router.delete('/:taskId/tags/:tagId', async (req, res) => {
-    const relation = await taskToTag.findOneAndDelete(
-        {
-            task : mongoose.Types.ObjectId(req.params.taskId), 
-            tag : mongoose.Types.ObjectId(req.params.tagId)
-        }
-    )
-    if(!relation) return res.status(404).send('Relation between given IDs is not found.')
-    res.send(relation);
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+        const relation = await taskToTag.findOneAndDelete(
+            {
+                task : mongoose.Types.ObjectId(req.params.taskId), 
+                tag : mongoose.Types.ObjectId(req.params.tagId),
+                userId : mongoose.Types.ObjectId(decoded._id)
+            }
+        )
+        if(!relation) return res.status(404).send('Relation between given IDs is not found.')
+        res.send(relation);
+    })    
 });
 
 router.post('/:taskId/tags/:tagId', async (req, res) => {
@@ -111,13 +139,15 @@ router.post('/:taskId/tags/:tagId', async (req, res) => {
     if(isExisting) {
         return res.status(400).send('This relation is existing');
     }
-
-    let relation = new taskToTag({
-        task: mongoose.Types.ObjectId(req.params.taskId),
-        tag: mongoose.Types.ObjectId(req.params.tagId)
-    });
-    relation = await relation.save();
-
-    res.send(relation);
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+        let relation = new taskToTag({
+            task: mongoose.Types.ObjectId(req.params.taskId),
+            tag: mongoose.Types.ObjectId(req.params.tagId),
+            userId: mongoose.Types.ObjectId(decoded._id)
+        });
+        relation = await relation.save();
+    
+        res.send(relation);
+    })
 });
 module.exports = router;
