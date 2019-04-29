@@ -11,13 +11,19 @@ const taskToTag = mongoose.model('taskToTag', new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Tag',
         require: true
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, {collection: 'taskToTag'}));
 
 function validateTaskToTag(taskToTag) {
     const schema = {
-        task: Joi.string(),
-        tag: Joi.string()
+        task: Joi.string().required(),
+        tag: Joi.string().required(),
+        userId: Joi.required()
     };
 
     return Joi.validate(taskToTag, schema);

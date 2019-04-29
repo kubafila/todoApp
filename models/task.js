@@ -14,14 +14,16 @@ const Task = mongoose.model('Task', new mongoose.Schema({
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 }));
 
 function validateTask(task) {
     const schema = {
         name: Joi.string().min(4).max(255).required(),
-        isDone: Joi.boolean()
+        isDone: Joi.boolean(),
+        userId: Joi.required()
     };
 
     return Joi.validate(task, schema);
