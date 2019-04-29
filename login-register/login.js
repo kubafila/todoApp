@@ -23,29 +23,11 @@ signInForm.addEventListener('submit', e => {
 
     //jeżeli wszystkie pola są poprawne...
     if (checkFieldsErrors(signInInputs)) {
-        //generujemy dane jako obiekt dataToSend
-        //domyślnie elementy disabled nie są wysyłane!
-        const elements = signInForm.querySelectorAll('input:not(:disabled)');
 
-        const dataToSend = new FormData();
-        [...elements].forEach(el => dataToSend.append(el.name, el.value));
-
-        const submit = document.querySelector('#sign-in-form');
-        submit.disabled = true;
 
         const url = signInForm.getAttribute('action');
         const method = signInForm.getAttribute('method');
 
-        console.log(url);
-        console.log(method);
-        console.log("email ", emailSignIn.value)
-        console.log("Hasło: ",passwordSignIn.value)
-        console.log(
-        JSON.stringify({
-            email: emailSignIn.value,
-            password: passwordSignIn.value
-        })
-        )
         
 
         fetch("http://localhost:3000/api/auth", {
@@ -59,9 +41,27 @@ signInForm.addEventListener('submit', e => {
                 password: passwordSignIn.value
             })
         })
-        
-        .then(x => x.text())
-        .then(x => console.log(x))
+        //jwc token
+        .then(res =>{
+            //wsytko dobrze
+            if (res.status == 200){
+                    alert("Zalogowano! przejdź na stronę główną")
+                return res.text()
+            }
+            else{
+
+                alert("Błąd logowania");
+                return null;
+            }
+            
+        } )
+        .then(res => {
+            
+            localStorage.setItem("userKey", res);
+            console.log(res)
+            //TUTAJ PODAĆ ADRES STRONY GŁÓWNEJ
+            //window.location.href = "http://127.0.0.1:5500/index.html";
+        })
     }
 });
 
