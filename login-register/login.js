@@ -2,7 +2,7 @@ const signInForm = document.querySelector('#sign-in-form');
 const signInInputs = signInForm.querySelectorAll('input[required]');
 const emailSignIn = document.getElementById("field-email-sign-in");
 const passwordSignIn = document.getElementById("field-password-sign-in");
-
+let loginError = false;
 //wyłączamy domyślną walidację
 signInForm.setAttribute('novalidate', true);
 
@@ -46,21 +46,32 @@ signInForm.addEventListener('submit', e => {
             //wsytko dobrze
             if (res.status == 200){
                     alert("Zalogowano! przejdź na stronę główną")
-                return res.text()
+                
             }
             else{
-
-                alert("Błąd logowania");
-                return null;
+                loginError = true;
+                
             }
+            return res.text()
             
         } )
         .then(res => {
-            
+            if(loginError == true){
+            swal({
+                title: "Oj. Coś poszło nie tak",
+                text: `Błąd: ${res}`,
+                icon: "error",
+                button: "Ok",
+                });
+                loginError = false;
+            }
+            else{
             localStorage.setItem("userKey", res);
             console.log(res)
             //TUTAJ PODAĆ ADRES STRONY GŁÓWNEJ
             //window.location.href = "http://127.0.0.1:5500/index.html";
+            }
+
         })
     }
 });
