@@ -18,7 +18,13 @@ window.onload = function () {
     {
         //wyczysczenie listy zadań
         list.innerHTML="";
-        fetch("http://localhost:3000/api/tasks")
+        fetch("http://localhost:3000/api/tasks", {
+                    method: 'get',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'x-auth-token': localStorage.getItem("userKey")
+                    }})
         .then(tasks => tasks.json())
         .then(tasks => {
         
@@ -42,7 +48,13 @@ window.onload = function () {
         console.log(task);
         
         //ask for tags
-        fetch(`http://localhost:3000/api/tasks/${task._id}/tags`)
+        fetch(`http://localhost:3000/api/tasks/${task._id}/tags`, {
+                    method: 'get',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'x-auth-token': localStorage.getItem("userKey")
+                    }})
         .then(res =>res.json())
         .then(res => {
             //jeżeli są tagi
@@ -126,7 +138,8 @@ window.onload = function () {
             method: 'delete',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-auth-token': localStorage.getItem("userKey")
             }})
         .then(res => res.json())
         .then(getTasks);
@@ -137,7 +150,8 @@ window.onload = function () {
             method: 'put',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-auth-token': localStorage.getItem("userKey")
             },
             body: JSON.stringify({
                 name: name,
@@ -152,7 +166,8 @@ window.onload = function () {
             method: 'put',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-auth-token': localStorage.getItem("userKey")
             },
             body: JSON.stringify({
                 name: name,
@@ -197,8 +212,13 @@ window.onload = function () {
 
     function addToDoItem(e) {
         e.preventDefault()
-        if (input.value.length <= 3) {
-            alert('Zadanie musi mieć minimum 3 znaki')
+        if (input.value.length <= 4) {
+            	swal({
+            	    title: "Za mało literek!",
+            	    text: "Zadanie musi posiadać minmum 4 znaki",
+            	    icon: "error",
+            	    button: "Już poprawiam",
+            	});
         } else {
             addNewTask();
         }
@@ -212,7 +232,8 @@ window.onload = function () {
                 isDone: false,
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-auth-token': localStorage.getItem("userKey")
             }
         })
         .then()

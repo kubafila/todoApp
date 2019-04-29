@@ -62,20 +62,24 @@ signUpForm.addEventListener('submit', e => {
                 checkFieldsErrors(badFields);
             } else {
                 if (ret.status === 200) {
-                    console.log("Utworzono konto pomyślnie!")
+                    	swal({
+                    	    title: "Konto utworzone!",
+                    	    text: "Teraz możesz się zalogować",
+                    	    icon: "success",
+                    	    button: "Ok",
+                    	});
                     document.querySelector('.sign-up-container').parentElement.classList.remove("right-panel-active");
                 }
-                if (ret.status === 400) {
-                    //jeżeli istnieje komunikat o błędzie wysyłki
-                    //np. generowany przy poprzednim wysyłaniu formularza
-                    //usuwamy go, by nie duplikować tych komunikatów
-                    if (document.querySelector('.send-error')) {
-                        document.querySelector('.send-error').remove();
-                    }
-                    const div = document.createElement('div');
-                    div.classList.add('send-error');
-                    div.innerText = 'Rejestracja się nie powiodła';
-                    submit.appendChild(div);
+                else {
+                    console.log("tu jestem");
+                    console.log(ret);
+                    console.log(ret.statusText);
+                    	swal({
+                    	    title: "Oj, coś poszło nie tak",
+                            text: `Błąd: ${ret.statusText}`,
+                    	    icon: "error",
+                    	    button: "Ok",
+                    	});
                 }
             }
         })

@@ -76,7 +76,14 @@ function getData() {
 
 	dropdownTagsItems.innerText = "";
 	
-	fetch(allTagsEndpoint)
+	fetch(allTagsEndpoint, {
+		method: 'get',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'x-auth-token': localStorage.getItem("userKey")
+		}
+	})
 		.then(res => res.json())
 		.then(res => {
 
@@ -132,7 +139,14 @@ function selectDropdownItem(){
 function getTaskData() {
 
 	dropdownTasksItems.innerText = "";
-	fetch(allTasksEndpoint)
+	fetch(allTasksEndpoint, {
+		method: 'get',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'x-auth-token': localStorage.getItem("userKey")
+		}
+	})
 		.then(res => res.json())
 		.then(res => {
 				dropdownTasksItems.innerText = "";
@@ -181,7 +195,8 @@ function addTag() {
 		method: 'post',
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'x-auth-token': localStorage.getItem("userKey")
 		},
 		body: JSON.stringify({
 			name: tagName.value,
@@ -197,7 +212,8 @@ function editTag() {
 		method: 'put',
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'x-auth-token': localStorage.getItem("userKey")
 		},
 		body: JSON.stringify({
 			name: tagName.value,
@@ -213,7 +229,8 @@ function removeTag() {
 		method: 'delete',
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'x-auth-token': localStorage.getItem("userKey")
 		}
 	})
 	.then(res =>res.json()).then(res => {if(logData) console.log(arguments.callee.name,res)});
@@ -226,7 +243,8 @@ fetch(`http://localhost:3000/api/tasks/${taskID}/tags/${tagID}`, {
 	method: 'post',
 	headers: {
 		'Accept': 'application/json',
-		'Content-Type': 'application/json'
+		'Content-Type': 'application/json',
+		'x-auth-token': localStorage.getItem("userKey")
 	}
 })
 	.then(res =>res.json()).then(res => {if(logData) console.log(arguments.callee.name,res)});
