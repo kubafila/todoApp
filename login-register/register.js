@@ -51,15 +51,16 @@ signUpForm.addEventListener('submit', e => {
             })
         })
         .then(ret => {
+            
             submit.disabled = false;
-
+            console.log(ret);
             if (ret.errors) {
                 ret.errors.map(function (el) {
                     return '[name="' + el + '"]'
                 });
 
                 const badFields = signUpForm.querySelectorAll(ret.errors.join(','));
-                checkFieldsErrors(badFields);
+                    checkFieldsErrors(badFields);
             } else {
                 if (ret.status === 200) {
                     	swal({
@@ -71,20 +72,24 @@ signUpForm.addEventListener('submit', e => {
                     document.querySelector('.sign-up-container').parentElement.classList.remove("right-panel-active");
                 }
                 else {
-                    console.log("tu jestem");
-                    console.log(ret);
-                    console.log(ret.statusText);
-                    	swal({
-                    	    title: "Oj, coś poszło nie tak",
-                            text: `Błąd: ${ret.statusText}`,
-                    	    icon: "error",
-                    	    button: "Ok",
-                    	});
+                   
+                   return ret.text();
                 }
             }
         })
-        .catch(_ => {
+        .then(ret => {
+            if(ret){
+                	swal({
+                	    title: "Oj. Coś poszło nie tak",
+                	    text: `Błąd: ${ret}`,
+                	    icon: "error",
+                	    button: "Ok",
+                	});
+            }
+        })
+        .catch(x=> {
             submit.disabled = false;
+            console.log(x)
         });
         
     }
