@@ -8,7 +8,9 @@ window.onload = function () {
     const btnDone = document.getElementById('btn-done')
     const btnTags = document.getElementById('btn-show-tags');
     const list = document.getElementById("list");
+    
   
+
     //"todo" albo "done" jeżeli chcemy filtorwać 
     let selectTasks ="all";
 
@@ -224,12 +226,9 @@ window.onload = function () {
    
 
     //DODANIE ZADANIA PO NACIŚNIĘCIU ENTERA
-    input.addEventListener("keyup", (e) => {
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
-         if (event.keyCode === 13) {
-             addNewTask();
-         }
-            
+        addNewTask();
     })
 
     getTasks();

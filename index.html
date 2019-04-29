@@ -8,10 +8,18 @@
 
 </head>
 <body>
+<nav class="navbar  navbar-dark bg-dark">
+  <a class="navbar-brand" href="#" id="email-text"></a>
+  <form class="form-inline">
+    <button class="btn btn-sm btn-outline-danger" type="button" id="logout-button">Wyloguj</button>
+  </form>
+</nav>
+
+
   <div class="container">
     <div class="row">
-      <div class="col-md-9" id="main-task-list">
-        <h1 class="text-center display-2">TODO List</h1>
+      <div class="col-md-9 mt-4" id="main-task-list">
+        <h1 class="text-center display-1 ">TODO List</h1>
         <p class="lead text-center">Hej, co masz dziś w planach?</p>
          
         <div class="row justify-content-center">
@@ -110,5 +118,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="getTasks.js"></script>
   <script src="tagsList.js"></script>
+  <script src="getUser.js"></script>
 </body>
 </html>

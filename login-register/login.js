@@ -36,16 +36,6 @@ signInForm.addEventListener('submit', e => {
         const url = signInForm.getAttribute('action');
         const method = signInForm.getAttribute('method');
 
-        console.log(url);
-        console.log(method);
-        console.log("email ", emailSignIn.value)
-        console.log("Hasło: ",passwordSignIn.value)
-        console.log(
-        JSON.stringify({
-            email: emailSignIn.value,
-            password: passwordSignIn.value
-        })
-        )
         
 
         fetch("http://localhost:3000/api/auth", {
@@ -59,9 +49,12 @@ signInForm.addEventListener('submit', e => {
                 password: passwordSignIn.value
             })
         })
-        
-        .then(x => x.text())
-        .then(x => console.log(x))
+        //jwc token
+        .then(res => res.text())
+        .then(res => {
+            localStorage.setItem("userKey", res);
+            window.location.href = "http://127.0.0.1:5500/index.html";
+        })
     }
 });
 
