@@ -80,7 +80,7 @@ router.delete('/:id', async (req, res) => {
                  userId: decoded._id
             }
         ).sort('name');
-        res.send(tasks);
+        res.send(task);
     });
 
     if (!task) return res.status(404).send('The task with the given ID was not found.');
