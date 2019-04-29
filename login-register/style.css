@@ -1,0 +1,238 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f6f5f7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: -1.25em 0 3.125em;
+    font-size: 16px;
+}
+
+h1 {
+    font-weight: bold;
+    margin: 0;
+}
+
+p {
+    font-size: 0.875em;
+    font-weight: 100;
+    line-height: 1.25em;
+    letter-spacing: 0.031em;
+    margin: 1.25em 0 1.875em;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.container {
+    background: #fff;
+    border-radius: 0.625em;
+    box-shadow: 0 0.875em 1.75em rgba(0, 0, 0, 0.25), 0 0.625em 0.625em rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+.form-container form {
+  background: #fff;
+  display: flex;
+  flex-direction: column;  
+  padding: 0 3.125em;;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.input-container {
+    background: #eee;
+    padding: 0.063em 0.625em;
+    margin: 0.5em 0;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    border-radius: 1.25em;
+}
+
+.input-container input {
+    background: #eee;
+    border: none;
+    padding: 0.3em 0.55em;
+    margin: 0.5em 0;
+    width: 100%;
+    outline: none;
+}
+
+input[type="submit"], button.ghost {
+    border-radius: 1.25em;
+    border: 0.063em solid #a73f6d;
+    background: #a73f6d;
+    color: #fff;
+    font-size: 0.75em;
+    font-weight: bold;
+    padding: 0.75em 2.813em;
+    letter-spacing: 0.063em;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+
+input[type="submit"]:active {
+    transform: scale(0.95);
+    outline: none
+}
+
+button.ghost:active {
+    transform: scale(0.95);
+    outline: none
+}
+
+input[type="submit"]:focus {
+    outline: none;
+}
+
+button.ghost:focus {
+    outline: none;
+}
+
+button.ghost {
+    background: transparent;
+    border-color: #fff;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.overlay {
+    background: #ff416c;
+    background: linear-gradient(to right, #c0392b, #8e44ad) no-repeat 0 0 / cover;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out; 
+}
+
+.overlay-panel {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2.5em;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out; 
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+/* Animation */
+
+/* Move signIn to the right */
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+}
+
+/* Move overlay to left */
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+/* Bring sign up over sign in */
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+}
+
+/* Move overlay back to right */
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+/* Walidacja formularza */
+input[type=text].error,
+input[type=email].error,
+input[type=password].error {
+    border-color: #E01546;
+    border-style: double;
+    border-radius: 1.25em
+}
+
+.field-error {
+    color: #E01546;
+    padding:0.3rem 0;
+    font-size:0.7rem;
+}
+
+.form .send-error {
+    display:inline-block;
+    font-family: sans-serif;
+    padding:1rem 2rem;
+    color:red;
+}
+
+@media only screen and (max-width: 768px) {
+    .input-container input {
+        overflow: hidden;
+    }
+}
