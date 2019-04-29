@@ -11,6 +11,10 @@ const Task = mongoose.model('Task', new mongoose.Schema({
     isDone: {
         type: Boolean,
         default: false
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }));
 

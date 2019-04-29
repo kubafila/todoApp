@@ -5,11 +5,16 @@ const {
 const { taskToTag, taskToTagValidation } = require('../models/taskToTag');
 const express = require('express');
 const mongoose = require('mongoose');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const tasks = await Task.find().sort('name');
-    res.send(tasks);
+    let tasks;
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+        tasks = await Task.find({userId: decoded._id}).sort('name');
+        res.send(tasks);
+    });
 });
 
 router.get('/:id', async (req, res) => {
@@ -21,29 +26,31 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const {
-        error
-    } = validate(req.body);
+    const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
-    let task = new Task({
-        name: req.body.name,
-        isDone: req.body.isDone,
+    let task;
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), function(err, decoded) {
+        task = new Task({
+            name: req.body.name,
+            isDone: req.body.isDone,
+            userId: decoded._id
+        });
     });
+    
     task = await task.save();
 
     res.send(task);
 });
 
 router.put('/:id', async (req, res) => {
-    const {
-        error
-    } = validate(req.body);
+    const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
-    const task = await Task.findByIdAndUpdate(req.params.id, {
+    const task;
+    jwt.verify(req.headers['x-auth-token'], config.get('jwtPrivateKey'), async function(err, decoded) {
+    task = await Task.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
-        isDone: req.body.isDone
+        isDone: req.body.isDone,
+        userId: decoded._id
     }, {
         new: true
     });
