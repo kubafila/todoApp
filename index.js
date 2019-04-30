@@ -29,8 +29,10 @@ app.use('/api/tags', tagsRoutes);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
-app.use(express.static("src"));
-app.use('/app', express.static('/src/app'))
+app.use("/", express.static(__dirname + '/public'));
+
+
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

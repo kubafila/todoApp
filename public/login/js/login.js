@@ -67,13 +67,22 @@ signInForm.addEventListener('submit', e => {
             }
             else{
             localStorage.setItem("userKey", res);
-             window.location.href = "http://localhost:3000/app"
+            //wait for localStorage
+            setTimeout(() => {
+                window.location.href = "http://localhost:3000/app"
+            }, 100)
             }
 
         })
     }
 });
 
+function waitForLocalStorage(key, cb, timer) {
+    if (!localStorage.getItem(key)) return (timer = setTimeout(waitForLocalStorage.bind(null, key), 100))
+    clearTimeout(timer)
+    if (typeof cb !== 'function') return localStorage.getItem(key)
+    return cb(localStorage.getItem(key))
+}
 
 /*
 
